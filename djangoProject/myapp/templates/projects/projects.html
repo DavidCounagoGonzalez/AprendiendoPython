@@ -1,0 +1,15 @@
+{% extends 'layouts/base.html' %} <!-- carga el base.html -->
+
+{% block content %} <!-- indica que su contenido estará en este mismo bloque idnicado en el base -->
+<h1>Projects</h1>
+
+{% for project in projects %} <!--  llamada a un for de python en html -->
+<article class="card">
+    <a href="{% url 'project_details' project.id %}"> <!-- En esta estructura separando con un espacio se permite pasar un parámetro variable para crear url que puedan estar cargando diversos datos según su valor -->
+        <h1>{{ project.name }}</h1>
+    </a>
+</article>
+
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<h1>Tasks</h1>
+<!-- Este comentario si se verá al inspeccionar la página -->
+{# note: esta es una tarea #}
+{% for task in tasks %}
+
+<div>
+    <!-- Este h1 contiene un ejemplo de como podríamos utilizar un condicional -->
+    <h1>{% if task.done == False %} ⏱ {% else %} ✅ {% endif %}  {{ task.title }}</h1> 
+    
+    <p>{{ task.description }}</p>
+    <p>Project: {{ task.project.name }}</p>
+    <button> Delete </button>
+    <button> ✅ Done </button>
+</div>
+
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% load static %} <!-- Permite cargar archivos que sean estáticos como imágenes o hojas de etilo -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DjangoProjects</title>
+    <link rel="stylesheet" href="{% static 'styles/main.css' %}">
+</head>
+<body>
+    <nav class="navbar container">
+        <ul>
+            <li>
+                <a href="{% url 'index' %}">Home</a> <!-- Con la estructura qeu se encuentra en el href podemos servirnos de los nombres asignados a nuestras urls en vez de tener que indicar la url como tal , esto permite que si una url ha de ser cambiada en solamente tendremos que cargarla en el archivo de urls.py -->
+            </li>
+            <li>
+                <a href="{% url 'projects' %}">Projects</a>
+            </li>
+            <li>
+                <a href="{% url 'create_project' %}">Create Project</a>
+            </li>
+            <li>
+                <a href="{% url 'tasks' %}">Tasks</a>
+            </li>
+            <li>
+                <a href="{% url 'create_task' %}">Create Task</a>
+            </li>
+            <li>
+                <a href="{% url 'about' %}">About</a>
+            </li>
+            
+        </ul>
+    </nav>
+    <main class="container">
+        {% block content %} <!-- Esta estructura sirve como un identificador para indicar donde se mostrará el contenido de otros archivos html permitiendo utilizar este como base -->
+        {% endblock %}
+    </main>
+</body>
+</html>
