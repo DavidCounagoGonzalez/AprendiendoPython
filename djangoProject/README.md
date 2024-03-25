@@ -41,8 +41,8 @@ Para cargar la BD por defecto que tare Django sobre nuestro archivo sqlite3 debe
 py manage.py migrate.
 
 ### Crear una clase nueva en nuestra BD
-Para ello iremos al archivo models.py en myapp y crearemos una clase(ver archivo en el repo para referencia), para que la 
-app reconozca el modelo creado iremos al archivo settings.py de mysite y buscaremos el apartado INSTALLED_APPS y añadiremos el nombre de la carpeta de nuestra app (en este caso myapp). Tras ello podremos lanzar las migraciones con:
+Para ello iremos al archivo <a href="https://github.com/DavidCounagoGonzalez/AprendiendoPython/blob/main/djangoProject/myapp/models.py">models.py</a> en myapp y crearemos una clase(ver archivo en el repo para referencia), para que la 
+app reconozca el modelo creado iremos al archivo <a href="https://github.com/DavidCounagoGonzalez/AprendiendoPython/blob/main/djangoProject/mysite/settings.py">settings.py</a> de mysite y buscaremos el apartado INSTALLED_APPS y añadiremos el nombre de la carpeta de nuestra app (en este caso myapp). Tras ello podremos lanzar las migraciones con:
 - py manage.py makemigrations (opcional indicar la carpeta para que solo haga las existentes en el)
 - py manage.py migrate (también se puede indicar la carpeta)
 
@@ -50,4 +50,4 @@ app reconozca el modelo creado iremos al archivo settings.py de mysite y buscare
 
 Para hacer uso de python en mitas de un archivo html nos valemos de {% %} y en caso de ser una variable pasada desde el render {{}}
 
-Los comentarios sobre los html se encuentran en ![projects.html](https://github.com/DavidCounagoGonzalez/AprendiendoPython/blob/main/djangoProject/myapp/templates/projects/projects.html), excepto el ejemplo de utilizar un condcional que está en <a href="https://github.com/DavidCounagoGonzalez/AprendiendoPython/blob/main/djangoProject/myapp/templates/tasks/tasks.html">tasks.html</a>
+Los comentarios sobre los html se encuentran en <a href="https://github.com/DavidCounagoGonzalez/AprendiendoPython/blob/main/djangoProject/myapp/templates/projects/projects.html">projects.html</a>, excepto el ejemplo de utilizar un condcional que está en <a href="https://github.com/DavidCounagoGonzalez/AprendiendoPython/blob/main/djangoProject/myapp/templates/tasks/tasks.html">tasks.html</a>
