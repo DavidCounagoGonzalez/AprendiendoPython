@@ -50,4 +50,4 @@ app reconozca el modelo creado iremos al archivo settings.py de mysite y buscare
 
 Para hacer uso de python en mitas de un archivo html nos valemos de {% %} y en caso de ser una variable pasada desde el render {{}}
 
-Los comentarios sobre los html se encuentran en projects.html, excepto el ejemplo de utilizar un condcional que está en tasks.html
+Los comentarios sobre los html se encuentran en ![projects.html]{https://github.com/DavidCounagoGonzalez/AprendiendoPython/blob/main/djangoProject/myapp/templates/projects/projects.html}, excepto el ejemplo de utilizar un condcional que está en ![tasks.html]{https://github.com/DavidCounagoGonzalez/AprendiendoPython/blob/main/djangoProject/myapp/templates/tasks/tasks.html}
