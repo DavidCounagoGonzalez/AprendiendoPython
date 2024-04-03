@@ -2,4 +2,21 @@
 
 {% block content %}
 <h1>Tasks</h1>
+<ul>
+    {% for task in tasks %}
+
+    <li>
+        <a href="{% url 'task_detail' task.id %}">
+            {% if task.important %}
+                <h1 style="color: red;">{{task.title}}</h1>
+            {% else %}
+                <h1 style="color: black;">{{task.title}}</h1>
+            {% endif %}
+            <p>{{task.description}}</p>
+            <p>By {{task.user.username}}</p>
+        </a>
+    </li>
+
+    {% endfor %}
+</ul>
 {% endblock %}
