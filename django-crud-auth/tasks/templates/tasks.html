@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Tasks</h1>
+<h1>Tareas Pendientes</h1>
 <ul>
     {% for task in tasks %}
 
@@ -14,6 +14,8 @@
             {% endif %}
             <p>{{task.description}}</p>
             <p>By {{task.user.username}}</p>
+
+            <p>{{task.datecompleted|date:'j M Y h:i'}}</p>
         </a>
     </li>
 
