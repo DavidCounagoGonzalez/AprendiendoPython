@@ -11,6 +11,7 @@ py -m virtualenv venv
 Ahora lanzamos el script activate para activar el entorno:
 .\venv\Scripts\activate
 Para comprobarlo podremos lanzar python –version , que nos devolverá la versión de python que es exclusiva de este proyecto.
+Si al activar el script nos salta un error de permisos y no sale el (venv) al incio de l alínea de ruta debemos usar, Set-ExecutionPolicy Unrestricted -Scope Process , para poder lanzarlo.
 
 Abrimos el proyecto en VisualStudio pulsamos F1 y escribimos select interpreter y escogemos la versión de python con ruta sobre nuestro proyecto ( que debe salir como recommended). Esto hará que al abrir una consola de visual se abra en el entorno.
 
