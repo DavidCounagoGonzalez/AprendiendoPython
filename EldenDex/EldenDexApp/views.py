@@ -7,17 +7,44 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from django.db import IntegrityError
+from .models import Creatures
+
  
 # Create your views here.
 
 def index(request):
     return render(request, 'index.html')
 
+def registrar_criaturas(request):
+    url_api = urllib.request.Request('https://eldenring.fanapis.com/api/creatures?limit=100')
+        
+    source = urllib.request.urlopen(url_api).read()
+        
+    lista_datos = json.loads(source)
+        
+    datos = lista_datos['data']
+    
+    criatura = Creatures()
+    
+    for dato in datos:
+        
+        criatura.id = dato['id']
+        criatura.name = dato['name']
+        criatura.image = dato['image']
+        criatura.description = dato['description']
+        try:
+            criatura.location = dato['location']
+            criatura.drops = dato['drops']
+        except KeyError:
+            print('as')
+        criatura.save()
+    return render(request, 'create.html')
+
 @login_required
 def listar_todo(request):
     datos = {}
     if request.method == 'GET':
-        url_api = urllib.request.Request('https://eldenring.fanapis.com/api/creatures')
+        url_api = urllib.request.Request('https://eldenring.fanapis.com/api/creatures?limit=115')
         
         source = urllib.request.urlopen(url_api).read()
         
