@@ -1,25 +1,22 @@
 from django.shortcuts import render
 import urllib.request
 import json
+from django.core.paginator import Paginator
 
 # Create your views here.
-def index(request):
-    if request.method == 'POST':
-        creature = request.POST['creature'].lower()
-        creature = creature.replace(' ', '%20')
-        url_api = urllib.request.Request('https://eldenring.fanapis.com/api/creatures&name={creature}')
+def index(request, pagina):
+    datos = {}
+    if request.method == 'GET':
+        url_api = urllib.request.Request('https://eldenring.fanapis.com/api/creatures?page=' + str(pagina))
         url_api.add_header('User-Agent', 'basilisk')
         
         source = urllib.request.urlopen(url_api).read()
         
         lista_datos = json.loads(source)
         
-        datos = {
-            'id': str(lista_datos['id']),
-            'name': str(lista_datos['name']).capitalize(),
-            'descripcion': str(lista_datos['description']).capitalize(),
-            'imagen': str(lista_datos['image'])
-        }
+        datos = lista_datos['data']
+        print(pagina)
+    else:
+        datos = {}
         
-        print(datos)
-    
+    return render(request, 'index.html', {'datos': datos, 'pagina': pagina})
