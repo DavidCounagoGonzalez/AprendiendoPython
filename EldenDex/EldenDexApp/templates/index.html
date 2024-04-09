@@ -1,26 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-{% load static %}
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EldenDex</title>
-</head>
-<body>
-    <h1>EldenDex</h1>
-    <ul>
-        {% for dato in datos %}
-        <li>
-            <p>{{dato.name}}</p>
-            <p>{{dato.description}}</p>
-            <img src="{{dato.image}}" alt="{{dato.name}}" style="width: 250px">
-        </li>
-
-        {% endfor %}
-    </ul>
-    <button><a href="{{pagina}}"> '-1' </a></button>
-    <button><a href="#">{{pagina}}</a></button>
-    <button><a href="{{pagina}}"> +1 </a></button>
-
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+<h1>Este es el index</h1>
+{% endblock %}

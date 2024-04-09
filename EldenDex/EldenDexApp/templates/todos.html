@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>EldenDex</h1>
+<ul>
+    {% for dato in datos %}
+    <li>
+        <p>{{dato.name}}</p>
+        <p>{{dato.description}}</p>
+        <img src="{{dato.image}}" alt="{{dato.name}}" style="width: 250px">
+    </li>
+
+    {% endfor %}
+</ul>
+
+{% endblock %}

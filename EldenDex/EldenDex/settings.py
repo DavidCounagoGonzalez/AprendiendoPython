@@ -127,6 +127,9 @@ STATICFILES_DIRS =(
     os.path.join(BASE_DIR, 'static'),
 )
 
+LOGIN_URL = '/login' #Esto sirve para que cuando alguien trate de entrar a un login required lo redireccone a la pestaña de logueo
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
