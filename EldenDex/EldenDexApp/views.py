@@ -49,19 +49,9 @@ def registrar_criaturas(request):
 
 @login_required
 def listar_todo(request):
-    datos = {}
-    if request.method == 'GET':
-        url_api = urllib.request.Request('https://eldenring.fanapis.com/api/creatures?limit=115')
+    criaturas = Creatures.objects.all()
         
-        source = urllib.request.urlopen(url_api).read()
-        
-        lista_datos = json.loads(source)
-        
-        datos = lista_datos['data']
-    else:
-        datos = {}
-        
-    return render(request, 'todos.html', {'datos': datos})
+    return render(request, 'todos.html', {'criaturas': criaturas})
 
 def signup(request):
     if request.method == "GET":
