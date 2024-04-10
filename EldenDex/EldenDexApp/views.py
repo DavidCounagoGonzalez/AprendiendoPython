@@ -15,19 +15,26 @@ from .models import Creatures
 def index(request):
     return render(request, 'index.html')
 
+def recoger_datos(url):
+    datos = []
+    for page in range(5):
+        url_api = urllib.request.Request(str(url) + str(page))
+            
+        source = urllib.request.urlopen(url_api).read()
+            
+        lista_datos = json.loads(source)
+        
+        datos = datos + lista_datos['data']
+        
+    return datos
+
 def registrar_criaturas(request):
-    url_api = urllib.request.Request('https://eldenring.fanapis.com/api/creatures?limit=100')
+    datos = recoger_datos('https://eldenring.fanapis.com/api/creatures?limit=100&page=')
         
-    source = urllib.request.urlopen(url_api).read()
-        
-    lista_datos = json.loads(source)
-        
-    datos = lista_datos['data']
-    
     criatura = Creatures()
-    
-    for dato in datos:
         
+    for dato in datos:
+            
         criatura.id = dato['id']
         criatura.name = dato['name']
         criatura.image = dato['image']
@@ -36,7 +43,7 @@ def registrar_criaturas(request):
             criatura.location = dato['location']
             criatura.drops = dato['drops']
         except KeyError:
-            print('as')
+            print('No sé porqué salta pero ta weno')
         criatura.save()
     return render(request, 'create.html')
 
