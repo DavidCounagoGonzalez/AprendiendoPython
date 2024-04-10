@@ -4,7 +4,9 @@
 
 <h1>EldenDex</h1>
 <div class="mt-3">
-
+    <div>
+        {% include 'paginator.html' %}
+    </div>
     {% for criatura in criaturas %}
         {% if forloop.first %} <div class="row" style="margin: 40px;">{% endif %}
         <div class="col-4">
@@ -20,7 +22,9 @@
         {% if forloop.counter|divisibleby:3 %}</div><div class="row" style="margin: 40px;">{% endif %}
         {% if forloop.last %}</div>{% endif %}
     {% endfor %}
-
+        <div>
+            {% include 'paginator.html' %}
+        </div>
 </div>
 
 {% endblock %}

@@ -8,6 +8,8 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from .models import Creatures
+from django.core.paginator import Paginator
+from django.http import Http404
 
  
 # Create your views here.
@@ -50,8 +52,15 @@ def registrar_criaturas(request):
 @login_required
 def listar_todo(request):
     criaturas = Creatures.objects.all()
+    page = request.GET.get('page', 1)
+    
+    try:
+        paginator = Paginator(criaturas, 18)
+        criaturas = paginator.page(page)
+    except:
+        raise Http404
         
-    return render(request, 'todos.html', {'criaturas': criaturas})
+    return render(request, 'todos.html', {'criaturas': criaturas, 'paginator': paginator})
 
 def signup(request):
     if request.method == "GET":
