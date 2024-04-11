@@ -54,7 +54,11 @@ def registrar_criaturas(request):
 
 @login_required
 def listar_todo(request):
-    criaturas = Creatures.objects.all()
+    queryset = request.GET.get('buscar')
+    if queryset:
+        criaturas = Creatures.objects.filter(name__icontains = queryset)
+    else:
+        criaturas = Creatures.objects.all()
     page = request.GET.get('page', 1)
 
     try:

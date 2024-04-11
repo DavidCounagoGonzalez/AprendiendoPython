@@ -2,43 +2,43 @@
 <div class="d-flex justify-content-center">
     <ul class="pagination">
         {% if criaturas.has_previous %}
-            <li class="page-item d-none d-sm-block"><a class="page-link" href="?page={{ criaturas.previous_page_number }}#pagtable">Anterior</a></li>
+            <li class="page-item d-none d-sm-block"><a class="page-link" href="?page={{ criaturas.previous_page_number }}{% if request.GET.buscar %}&amp;buscar={{ request.GET.buscar }}{% endif %}">Anterior</a></li>
         {% endif %}
         {% for page in paginator.page_range %}
             {% if forloop.last and page != criaturas.number and paginator.num_pages > 7 %} 
                 {% if criaturas.next_page_number != paginator.num_pages%}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ criaturas.number | add:1}}#pagtable">...</a>
+                    <a class="page-link" href="?page={{ criaturas.number | add:1}}{% if request.GET.buscar %}&amp;buscar={{ request.GET.buscar }}{% endif %}">...</a>
                 </li>
                 {% endif %}
             <li class="page-item">
-                    <a class="page-link" href="?page={{paginator.num_pages}}#pagtable">{{paginator.num_pages}}</a>
+                    <a class="page-link" href="?page={{paginator.num_pages}}{% if request.GET.buscar %}&amp;buscar={{ request.GET.buscar }}{% endif %}">{{paginator.num_pages}}</a>
             </li>
             {% endif %}
             {% if page == criaturas.number and page > 7 %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ page | add:-1 }}#pagtable">...</a>
+                <a class="page-link" href="?page={{ page | add:-1 }}{% if request.GET.buscar %}&amp;buscar={{ request.GET.buscar }}{% endif %}">...</a>
             </li>    
             {% endif %}
             {% if page < 7 or page == criaturas.number %}
             <li class="page-item {% if page == criaturas.number %}active{% endif %}">
-                <a class="page-link" href="?page={{ page }}#pagtable">{{ page }}</a>
+                <a class="page-link" href="?page={{ page }}{% if request.GET.buscar %}&amp;buscar={{ request.GET.buscar }}{% endif %}">{{ page }}</a>
             </li>
             {% endif %}
         {% endfor %}
         {% if criaturas.has_next %}
             <li class="page-item d-none d-sm-block">
-                <a class="page-link" href="?page={{ criaturas.next_page_number }}#pagtable">Siguiente</a>
+                <a class="page-link" href="?page={{ criaturas.next_page_number }}{% if request.GET.buscar %}&amp;buscar={{ request.GET.buscar }}{% endif %}">Siguiente</a>
             </li>
         {% endif %}
     </ul>
 </div>
 <div class="d-flex justify-content-center d-sm-none">            
     {% if criaturas.has_previous %}
-        <span class="page-item"><a  class="page-link" href="?page={{ criaturas.previous_page_number }}#pagtable">Anterior</a></span>
+        <span class="page-item"><a  class="page-link" href="?page={{ criaturas.previous_page_number }}{% if request.GET.buscar %}&amp;buscar={{ request.GET.buscar }}{% endif %}">Anterior</a></span>
     {% endif %}
     {% if criaturas.has_next %}
-        <span class="page-item"><a class="page-link" href="?page={{ criaturas.next_page_number }}#pagtable">Siguiente</a></span>
+        <span class="page-item"><a class="page-link" href="?page={{ criaturas.next_page_number }}{% if request.GET.buscar %}&amp;buscar={{ request.GET.buscar }}{% endif %}">Siguiente</a></span>
     {% endif %}
     <br>
     <br>
