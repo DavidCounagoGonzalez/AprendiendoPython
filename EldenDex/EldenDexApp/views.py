@@ -1,42 +1,44 @@
 from django.shortcuts import render
 import urllib.request
 import json
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-from django.contrib.auth.models import User
-from django.db import IntegrityError
 from .models import Creatures
 from django.core.paginator import Paginator
 from django.http import Http404
+from .forms import CustomUserCreationForm
 
- 
+
 # Create your views here.
 
 def index(request):
     return render(request, 'index.html')
 
+
 def recoger_datos(url):
     datos = []
     for page in range(5):
         url_api = urllib.request.Request(str(url) + str(page))
-            
+
         source = urllib.request.urlopen(url_api).read()
-            
+
         lista_datos = json.loads(source)
-        
+
         datos = datos + lista_datos['data']
-        
+
     return datos
 
+
 def registrar_criaturas(request):
-    datos = recoger_datos('https://eldenring.fanapis.com/api/creatures?limit=100&page=')
-        
+    datos = recoger_datos(
+        'https://eldenring.fanapis.com/api/creatures?limit=100&page=')
+
     criatura = Creatures()
-        
+
     for dato in datos:
-            
+
         criatura.id = dato['id']
         criatura.name = dato['name']
         criatura.image = dato['image']
@@ -49,42 +51,38 @@ def registrar_criaturas(request):
         criatura.save()
     return render(request, 'create.html')
 
+
 @login_required
 def listar_todo(request):
     criaturas = Creatures.objects.all()
     page = request.GET.get('page', 1)
-    
+
     try:
         paginator = Paginator(criaturas, 18)
         criaturas = paginator.page(page)
     except:
         raise Http404
-        
+
     return render(request, 'todos.html', {'criaturas': criaturas, 'paginator': paginator})
 
+
 def signup(request):
-    if request.method == "GET":
-        return render(request, 'signup.html', {
-            'form': UserCreationForm
-        })
-    else:
-        if request.POST['password1'] == request.POST['password2']:
-            # registrar usuario
-            try:
-                usuario = User.objects.create_user(
-                    username=request.POST['username'], password=request.POST['password1'])
-                usuario.save()
-                login(request, usuario)
-                return redirect('index')
-            except IntegrityError:
-                return render(request, 'signup.html', {
-                    'form': UserCreationForm,
-                    'error': 'El usuario ya existe'
-                })
-        return render(request, 'signup.html', {
-            'form': UserCreationForm,
-            'error': 'Las contraseñas no coinciden'
-        })
+    data = {
+        'form':  CustomUserCreationForm
+    }
+    if request.method == "POST":
+        usuario_form = CustomUserCreationForm(data=request.POST)
+        # registrar usuario
+        if usuario_form.is_valid():
+            usuario_form.save()
+            usuario = authenticate(
+                username=usuario_form.cleaned_data['username'], password=usuario_form.cleaned_data['password1'])
+            login(request, usuario)
+            return redirect('index')
+        else:
+            data['error'] = 'Comprueba que las credenciales cumplan los requisitos'
+    return render(request, 'signup.html', data)
+
 
 def logueo(request):
     if request.method == 'GET':
@@ -92,8 +90,9 @@ def logueo(request):
             'form': AuthenticationForm
         })
     else:
-        usuario = authenticate(request, username=request.POST['username'], password=request.POST['password'])
-        
+        usuario = authenticate(
+            request, username=request.POST['username'], password=request.POST['password'])
+
         if usuario is None:
             return render(request, 'login.html', {
                 'form': AuthenticationForm,
@@ -102,7 +101,9 @@ def logueo(request):
         else:
             login(request, usuario)
             return redirect('index')
-        
+
+
 def cerrar_sesion(request):
     logout(request)
-    return redirect ('index')
+    return redirect('index')
+

@@ -1,16 +1,28 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>SignUp</h1>
 
-{{error}}
-
-<form method="POST">
+{% load crispy_forms_tags %}
+<h1>Registrarse</h1>
+{% if error %}
+<div class="alert alert-danger" role="alert">
+    {{error}}
+</div>
+{% endif %}
+<form action="" method="POST">
     {% csrf_token %}
-    {{form.as_p}}
 
-    <button>
-        SignUp
-    </button>
+    <div class="card mx-auto" style="width: 30rem;">
+        <div class="card-body">
+            <h5 class="card-title">Completa los campos para el registro</h5>
+
+            {{ form | crispy }}
+
+            <a href="{% url 'logueo' %}" class="card-link">Login</a>
+            <button class="btn btn-sm btn-primary float-end" type="submit">Registrar</button>
+        </div>
+    </div>
+
 </form>
+
 {% endblock %}

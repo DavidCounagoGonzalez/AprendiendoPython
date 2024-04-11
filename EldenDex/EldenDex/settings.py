@@ -38,8 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'EldenDexApp'
+    'EldenDexApp',
+    "crispy_forms",
+    'crispy_bootstrap5'
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -128,6 +134,13 @@ STATICFILES_DIRS =(
 )
 
 LOGIN_URL = '/login' #Esto sirve para que cuando alguien trate de entrar a un login required lo redireccone a la pestaña de logueo
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'djangopruebo@gmail.com'
+EMAIL_HOST_PASSWORD = 'gtbmlcixuauwfiqe'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
 # Default primary key field type
