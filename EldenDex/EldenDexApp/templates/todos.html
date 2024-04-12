@@ -19,7 +19,7 @@
 </div>
 
 <div class="mt-3">
-    <a href="/all?order={% if order == asc %}desc{% else %}asc{%endif%}{% if paramOrder %}&amp;{{ paramOrder }}{% endif %}"><button class="btn btn-primary">Nombre</button></a>
+    <a href="/all?order={% if order == 'asc' %}desc{% else %}asc{%endif%}{% if paramOrder %}&amp;{{ paramOrder }}{% endif %}"><button class="btn btn-primary">Nombre</button></a>
     <div>
         {% include 'paginator.html' %}
     </div>

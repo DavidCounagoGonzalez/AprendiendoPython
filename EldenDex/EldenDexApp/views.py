@@ -55,8 +55,8 @@ def registrar_criaturas(request):
 
 @login_required
 def listar_todo(request):
-    queryset = request.GET.get('buscar')
-    queryOrder = request.GET.get('order', None)
+    queryset = request.GET.get('buscar', '')
+    queryOrder = request.GET.get('order', 'asc')
     
     if queryset:
         criaturas = Creatures.objects.filter(name__icontains = queryset)
@@ -86,7 +86,6 @@ def listar_todo(request):
         del paramOrder['page']
     if request.GET.get('order'):
         del paramOrder['order']   
-    
     
     data = {
         'criaturas': criaturas,
