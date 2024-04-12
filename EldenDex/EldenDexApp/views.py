@@ -9,6 +9,7 @@ from .models import Creatures
 from django.core.paginator import Paginator
 from django.http import Http404
 from .forms import CustomUserCreationForm
+from django.utils.http import urlencode
 
 
 # Create your views here.
@@ -50,15 +51,23 @@ def registrar_criaturas(request):
             print('No sé porqué salta pero ta weno')
         criatura.save()
     return render(request, 'create.html')
-
+  
 
 @login_required
 def listar_todo(request):
     queryset = request.GET.get('buscar')
+    queryOrder = request.GET.get('order', None)
+    
     if queryset:
         criaturas = Creatures.objects.filter(name__icontains = queryset)
     else:
         criaturas = Creatures.objects.all()
+    
+    if queryOrder == 'asc':
+        criaturas = criaturas.order_by('name')
+    elif queryOrder == 'desc':
+        criaturas = criaturas.order_by('-name')
+        
     page = request.GET.get('page', 1)
 
     try:
@@ -66,8 +75,28 @@ def listar_todo(request):
         criaturas = paginator.page(page)
     except:
         raise Http404
+    
+    paramPage = request.GET.copy()
+    if request.GET.get('page'):
+        del paramPage['page']
+    
+    
+    paramOrder = request.GET.copy()
+    if request.GET.get('page'):
+        del paramOrder['page']
+    if request.GET.get('order'):
+        del paramOrder['order']   
+    
+    
+    data = {
+        'criaturas': criaturas,
+        'paginator': paginator,
+        'order': queryOrder,
+        'paramPage': paramPage.urlencode(),
+        'paramOrder': paramOrder.urlencode()
+    }
 
-    return render(request, 'todos.html', {'criaturas': criaturas, 'paginator': paginator})
+    return render(request, 'todos.html', data)
 
 
 def signup(request):
