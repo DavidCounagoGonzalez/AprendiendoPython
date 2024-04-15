@@ -24,7 +24,7 @@ py -m django –version
 
 ### Crear proyecto Django:
 Para crear un proyecto de Django utilizaremos el siguiente comando para crear los archivos en nuestro proyecto:
-django-admin startproject mysite .
+django-admin startproject mysite . (el punto se utiliza para que no cree una carpeta nueva e instale el projecto en la actual).
 Ahora para lanzar el servidor con nuestro proyecto usaremos el archivo mange.py que se creó en el punto anterior de la siguiente manera:
 py manage.py runserver
 		Esta ejecución debería devolver contra el final esta línea 
