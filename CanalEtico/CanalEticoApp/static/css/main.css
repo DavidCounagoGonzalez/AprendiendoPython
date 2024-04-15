@@ -1,0 +1,58 @@
+html,
+body {
+    height: 100%;
+}
+
+.bloque {
+    padding: 10%;
+}
+
+.bloque-Info {
+    background-color: lightpink;
+}
+
+.bloque-Form {
+    background-color: whitesmoke;
+}
+
+/* Acordeon */
+
+.accordion-item {
+    border: none;
+}
+
+.accordion-button {
+    border-bottom: 1px solid #C4D4E0;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: white;
+    box-shadow: none;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+}
+
+.btn-Consulta{
+    background-color: whitesmoke;
+    border: 1px black solid;
+    color: black;
+}
+
+.btn-Consulta:hover{
+    background-color: lightpink;
+    font-weight: bold;
+}
+
+.btn-primary:hover{
+    font-weight: bold;
+}
+
+@media only screen and (max-width: 768px) {
+
+    html,
+    body {
+        height: auto;
+    }
+}
