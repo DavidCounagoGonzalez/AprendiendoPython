@@ -1,1 +1,26 @@
-{% extends 'base.html%}
+{% extends 'base.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+<div class="container-fluid h-100">
+    <div class="row justify-content-center h-100 flex-column-reverse flex-md-row">
+        <div class="col-12 col-md-7 bloque bloque-Form text-start">
+            <div class="d-flex flex-column flex-lg-row-fluid w-lg-50 p-0">
+                <div class="d-flex flex-center flex-column flex-lg-row-fluid">
+                    <div class="w-lg-500px p-9">
+                        <h2>Consultar un comunicado</h2>
+                        <p>Introduce el código de tu comuinicado, el cual recibiste en tu correo o al final de realizar tu petición, junto a la comtraseña que indicaste en el formulario.</p>
+                        <form class="form w-100" action="#" method="post">
+                            {% csrf_token %}
+
+                            {{ form | crispy }}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-5 bloque bloque-Info text-center">
+            <h1>Canal Ético</h1>
+        </div>
+    </div>
+</div>
+{% endblock %}
