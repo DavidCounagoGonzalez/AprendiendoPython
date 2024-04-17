@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MinLengthValidator
 
 # Create your models here.
 
@@ -31,7 +31,7 @@ class Comunicado(models.Model):
         NS = '', 'No lo sé'
     
     token = models.CharField(max_length=12, unique=True)
-    contraseña =  models.CharField(max_length=200, blank=False)
+    contraseña =  models.CharField(max_length=200, blank=False, validators=[MinLengthValidator(8)])
     tipo = models.CharField(max_length=2, choices=Tipo.choices, default=Tipo.LEG)
     implicados = models.TextField(blank=True)
     descripcion = models.TextField()
