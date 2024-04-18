@@ -13,6 +13,8 @@
                             {% csrf_token %}
 
                             {{ form | crispy }}
+
+                            <a class="btn btn-primary w-40" href="/comunicacion/finalizar">Continuar</a>
                         </form>
                     </div>
                 </div>
@@ -23,9 +25,11 @@
                 <h2>Pasos para el Comunicado</h2>
                 <div class="list-group lista-pasos text-center justify-content-center">
                     <button type="button" class="list-group-item list-group-item-action active pasos" aria-current="true">
-                        <a href="/consultar" class="stepper_link">Accede</a>
+                        <a href="/comunicacion/tipo/" class="stepper_link">Inicia</a>
                     </button>
-                    <button type="button" class="list-group-item list-group-item-action pasos"><a href="/estado" class="stepper_link">Estado</a></button>
+                    <button type="button" class="list-group-item list-group-item-action pasos active"><a href="/comunicacion/user/" class="stepper_link">Datos Personales</a></button>
+                    <button type="button" class="list-group-item list-group-item-action pasos active"><a href="/comunicacion/registro/" class="stepper_link">Datos Comunicado</a></button>
+                    <button type="button" class="list-group-item list-group-item-action pasos"><a href="/comunicacion/finalizar/" class="stepper_link">Final</a></button>
                 </div>
             </div>
         </div>

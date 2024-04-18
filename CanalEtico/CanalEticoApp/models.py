@@ -21,7 +21,7 @@ class Comunicado(models.Model):
         COR = "6", "Corrupción y/o fraude"
         BNQ = "7", "Conducta relacionada con el blanqueo de capitales"
         DMG = "8", "Daños contra el medio ambiente"
-        SEG = "9", "Riegos de seguridad y salud"
+        SEG = "9", "Riesgos de seguridad y salud"
         ACC = '10', "Actos contra la libre competencia"
         INP = '11', "Infracción de la normativa de protección de datos"
         
@@ -30,7 +30,7 @@ class Comunicado(models.Model):
         NO = 'False', 'No'
         NS = '', 'No lo sé'
     
-    token = models.CharField(max_length=12, unique=True)
+    token = models.CharField("Código del comunicado", max_length=12, unique=True)
     contraseña =  models.CharField(max_length=200, blank=False, validators=[MinLengthValidator(8)])
     tipo = models.CharField(max_length=2, choices=Tipo.choices, default=Tipo.LEG)
     implicados = models.TextField(blank=True)
@@ -41,3 +41,4 @@ class Comunicado(models.Model):
     fecha = models.DateTimeField(auto_now_add = True)
     pruebas = models.FileField(blank=True, null=True, upload_to="prueba/%Y/%m/%D/")
     solucionado = models.BooleanField(default=False)
+    comunicante = models.ForeignKey(Usuario, blank=True, on_delete=models.PROTECT, default=0)

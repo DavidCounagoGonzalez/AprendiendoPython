@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+<div class="container-fluid h-100">
+    <div class="row justify-content-center h-100 flex-column-reverse flex-md-row">
+        <div class="col-12 col-md-7 bloque bloque-Form text-start">
+            <div class="d-flex flex-column flex-lg-row-fluid w-lg-50 p-0">
+                <div class="d-flex flex-center flex-column flex-lg-row-fluid">
+                    <div class="w-lg-500px p-9">
+                        <form class="form w-100" method="post">
+                            {% csrf_token %}
+                            <div class="text-center mb-11">
+                                <h2>¿De que forma quiere hacer?</h2>
+                                <p>
+                                    Si escoge personal deberá realizar un formulario donde proporciona datos esenciales y recibirá el código de consulta a su correo.
+                                    Por otro lado de forma anónima irá directo a crear la consulta, pero deberá hacerse responsable de no perder el código entregado al finalizar.
+                                </p>
+                            </div>
+                            <div class="row g-3 mb-8 mt-5">
+                                <div class="col-md-6">
+                                    <button class="btn btn-primary w-100" name="tipo" value="1" type="submit">Personal</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-Consulta w-100" name="tipo" value="2" type="submit">Anónimo</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-5 bloque bloque-Info text-center sticky-md-top">
+            <div class="sticky-top text-center">
+                <h2>Pasos para el Comunicado</h2>
+                <div class="list-group lista-pasos text-center justify-content-center">
+                    <button type="button" class="list-group-item list-group-item-action active pasos" aria-current="true">
+                        <a href="/comunicacion/tipo/" class="stepper_link">Inicia</a>
+                    </button>
+                    <button type="button" class="list-group-item list-group-item-action pasos"><a href="/comunicacion/user/" class="stepper_link">Datos Personales</a></button>
+                    <button type="button" class="list-group-item list-group-item-action pasos"><a href="/comunicacion/registro/" class="stepper_link">Datos Comunicado</a></button>
+                    <button type="button" class="list-group-item list-group-item-action pasos"><a href="/comunicacion/finalizar/" class="stepper_link">Final</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
