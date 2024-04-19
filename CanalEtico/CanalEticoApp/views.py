@@ -3,14 +3,33 @@ from .forms import UsuarioForm, ComunicadoForm, ConsultaForm
 from django.http import HttpResponse
 from .models import Usuario, Comunicado
 import secrets
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
 
 def consultar(request):
-    return render(request, 'consultar.html', {'form': ConsultaForm})
+    if request.method == 'GET':
+        return render(request, 'consultar.html', {'form': ConsultaForm})
+    else:
+        if Comunicado.objects.filter(token=request.POST['token']).count() > 0:
+            request.session['tokenConsulta'] = request.POST['token']
+            contra = getHashPass(request.POST['token'])
+            if check_password(request.POST['contraseña'], contra):
+                return redirect('revision')
+            else:
+                return render(request, 'consultar.html', {'form': ConsultaForm, 'error': 'Contraseña equivocada'})
+        else:
+            return render(request, 'consultar.html', {'form': ConsultaForm, 'error': 'NO existe ningún comunicado con ese código registrado'})
+
+def getHashPass(codigo):
+    contraseña_Com = Comunicado.objects.get(token=codigo)
+    
+    return contraseña_Com.contraseña
+
+def revision(request):
+    return render(request, 'revision.html')
 
 def tipo_comunicado(request):
     if request.method == 'GET':
