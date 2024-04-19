@@ -9,12 +9,13 @@
                     <div class="w-lg-500px p-9">
                         <h2>Consultar un comunicado</h2>
                         <p>Introduce el código de tu comuinicado, el cual recibiste en tu correo o al final de realizar tu petición, junto a la contraseña que indicaste en el formulario.</p>
-                        <form class="form w-100" action="#" method="post">
+                        <p>{{ error }}</p>
+                        <form class="form w-100" method="post">
                             {% csrf_token %}
 
                             {{ form | crispy }}
 
-                            <a class="btn btn-primary w-40" href="/comunicacion/finalizar">Continuar</a>
+                            <button class="btn btn-primary w-40" type="submit" name="tipo" value="3">Continuar</button>
                         </form>
                     </div>
                 </div>

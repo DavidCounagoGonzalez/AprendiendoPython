@@ -14,7 +14,7 @@ class ComunicadoForm(ModelForm):
     
     class Meta:
         model = Comunicado
-        fields = ['tipo', 'descripcion', 'implicados', 'lugar', 'testigos', 'avisado', 'pruebas', 'contraseña', 'contraseña', 'contraseña', 'contraseña2' ]
+        fields = ['tipo', 'descripcion', 'implicados', 'lugar', 'testigos', 'avisado', 'pruebas', 'contraseña', 'contraseña2' ]
         
 class ConsultaForm(ModelForm):
     

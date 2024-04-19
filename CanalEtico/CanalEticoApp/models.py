@@ -28,7 +28,12 @@ class Comunicado(models.Model):
     class Avisado(models.TextChoices):
         SI = 'True', 'Si'
         NO = 'False', 'No'
-        NS = '', 'No lo sé'
+        NS = 'None', 'No lo sé'
+        
+    TRUE_FALSE_CHOICES = (
+        (True, 'Si'),
+        (False, 'No')
+    )
     
     token = models.CharField("Código del comunicado", max_length=12, unique=True)
     contraseña =  models.CharField(max_length=200, blank=False, validators=[MinLengthValidator(8)])
@@ -37,8 +42,8 @@ class Comunicado(models.Model):
     descripcion = models.TextField()
     lugar = models.CharField(max_length=124)
     testigos = models.TextField(blank=True)
-    avisado = models.BooleanField("Algún superior fue avisado?", choices=Avisado.choices, default=Avisado.NO, null=True)
+    avisado = models.BooleanField("Algún superior fue avisado?", choices= TRUE_FALSE_CHOICES, default='', null=True)
     fecha = models.DateTimeField(auto_now_add = True)
     pruebas = models.FileField(blank=True, null=True, upload_to="prueba/%Y/%m/%D/")
     solucionado = models.BooleanField(default=False)
-    comunicante = models.ForeignKey(Usuario, blank=True, on_delete=models.PROTECT, default=0)
+    comunicante = models.ForeignKey(Usuario, blank=True, on_delete=models.PROTECT, null=True)
