@@ -95,4 +95,17 @@ def data_comunicado(request):
     #     return HttpResponse('No tienes permiso para acceder prueba a volver al <a href="/">inicio</a>', status=401)
 
 def finalizar(request):
-    return render(request, 'final.html')
+    try:
+        del request.session['user']
+        del request.session['tipo']
+    except:
+        pass
+    
+    codigo = request.session['token']
+        
+    try:
+        del request.session['token']
+    except:
+        return HttpResponse('Ha ocurrido un error, prueba a volver al <a href="/">inicio</a>', status=404)
+    
+    return render(request, 'final.html', {'codigo': codigo})
