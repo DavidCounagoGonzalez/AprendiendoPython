@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import UsuarioForm, ComunicadoForm, ConsultaForm
 from django.http import HttpResponse
-from .models import Usuario, Comunicado
+from .models import Usuario, Comunicado, Tipo
 import secrets
 from django.contrib.auth.hashers import make_password, check_password
 
@@ -14,9 +14,9 @@ def consultar(request):
         return render(request, 'consultar.html', {'form': ConsultaForm})
     else:
         if Comunicado.objects.filter(token=request.POST['token']).count() > 0:
-            request.session['tokenConsulta'] = request.POST['token']
             contra = getHashPass(request.POST['token'])
             if check_password(request.POST['contraseña'], contra):
+                request.session['tokenConsulta'] = request.POST['token']
                 return redirect('revision')
             else:
                 return render(request, 'consultar.html', {'form': ConsultaForm, 'error': 'Contraseña equivocada'})
@@ -29,17 +29,23 @@ def getHashPass(codigo):
     return contraseña_Com.contraseña
 
 def revision(request):
-    return render(request, 'revision.html')
+    try:
+        data = Comunicado.objects.filter(token=request.session['tokenConsulta']).values()
+        for x in data:
+            del x['contraseña']
+            x['tipo_id'] = Tipo.objects.get(id=x['tipo_id'])
+        return render(request, 'revision.html', {'data': data})
+    except:
+        return redirect('index')
 
-def tipo_comunicado(request):
+def forma_comunicado(request):
     if request.method == 'GET':
         return render(request, 'ComForma.html')
     else:
-        request.session['tipo'] = request.POST['tipo']
-        print(request.session['tipo'])
-        if request.session['tipo'] == '1':
+        request.session['forma'] = request.POST['forma']
+        if request.session['forma'] == '1':
             return redirect('userinfo')
-        elif request.session['tipo'] == '2':
+        elif request.session['forma'] == '2':
             return redirect('comData')
         else:
             return render(request, 'ComForma.html', {
@@ -64,8 +70,8 @@ def get_IdUsuario(email):
             
 def user_info(request):
     try:
-        if request.session['tipo'] != '1' and request.session['tipo'] != '3':
-            return redirect('tipo')
+        if request.session['forma'] != '1' and request.session['forma'] != '4':
+            return redirect('forma')
         else:
             if request.method == 'GET':
                 return render(request, 'InfoUser.html', {'form': UsuarioForm})
@@ -75,7 +81,7 @@ def user_info(request):
                     error = verifica_User(request.POST)
                     new_User = form.save(commit=False)
                     new_User.save()
-                    request.session['tipo'] = request.POST['tipo']
+                    request.session['forma'] = request.POST['forma']
                     request.session['user']= get_IdUsuario(request.POST['email'])
                     return redirect('comData')
                 except ValueError:
@@ -84,9 +90,9 @@ def user_info(request):
         return HttpResponse('No tienes permiso para acceder prueba a volver al <a href="/">inicio</a>', status=401)
 
 def data_comunicado(request):
-    # try:
-        if request.session['tipo'] != '2' and request.session['tipo'] != '3':
-            return redirect('tipo')
+    try:
+        if request.session['forma'] != '2' and request.session['forma'] != '4':
+            return redirect('forma')
         else:
             if request.method == 'GET':
                 return render(request, 'DataCom.html', {'form': ComunicadoForm})
@@ -103,26 +109,24 @@ def data_comunicado(request):
                         except:
                             pass
                         new_Com.save()
-                        print(request.session['token'])
+                        
                         return redirect('finalizar')
                     else:
                         return render(request, 'DataCom.html', {'form': ComunicadoForm, 'error': 'Las contraseñas no coinciden'})
                 else:
-                    print(form.errors)
+                    
                     return render(request, 'DataCom.html', {'form': ComunicadoForm, 'error': 'revise los datos'})
-    # except:
-    #     return HttpResponse('No tienes permiso para acceder prueba a volver al <a href="/">inicio</a>', status=401)
+    except:
+        return HttpResponse('No tienes permiso para acceder prueba a volver al <a href="/">inicio</a>', status=401)
 
 def finalizar(request):
     try:
         del request.session['user']
-        del request.session['tipo']
+        del request.session['forma']
     except:
-        pass
-    
-    codigo = request.session['token']
-        
+        pass  
     try:
+        codigo = request.session['token']
         del request.session['token']
     except:
         return HttpResponse('Ha ocurrido un error, prueba a volver al <a href="/">inicio</a>', status=404)

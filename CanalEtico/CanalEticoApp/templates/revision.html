@@ -1,1 +1,56 @@
-<h1>ES aquí si</h1>
+{% extends 'base.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+<div class="container-fluid h-100">
+    <div class="row justify-content-center h-100 flex-column-reverse flex-md-row">
+        <div class="col-12 col-md-7 bloque bloque-Form text-start">
+            <div class="d-flex flex-column flex-lg-row-fluid w-lg-50 p-0">
+                <div class="d-flex flex-center flex-column flex-lg-row-fluid">
+                    <div class="w-lg-500px p-9">
+                        <h2>Su Comunicado</h2>
+                        {% for x in data %}
+                            <h4>Resolución</h4>
+                            <p>{% if x.solucionado %} Tu comunicado ya ha sido revisado {% else %} Aún no se ha revisado {% endif %}</p>
+
+                            {% if x.implicados %}
+                            <h4>Implicados</h4>
+                            <p> {{ x.implicados }}</p>
+                            {% endif %}
+
+                            <h4>Tipo</h4>
+                            <p>{{x.tipo_id}}</p>
+
+                            <h4>Descripción</h4>
+                            <p>{{ x.descripcion }}</p>
+
+                            {% if x.testigos %}
+                            <h4>Testigos</h4>
+                            <p>{{ x.testigos }}</p>
+                            {% endif %}
+
+                            <h4>Lugar</h4>
+                            <p>{{ x.lugar }}</p>
+
+                            {% if x.pruebas %}
+                            <h4>Pruebas</h4>
+                            <object data="{{ x.pruebas }}" width="200" height="200"></object>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-5 bloque bloque-Info text-center sticky-md-top">
+            <div class="sticky-top text-center">
+                <h2>Pasos para el Comunicado</h2>
+                <div class="list-group lista-pasos text-center justify-content-center">
+                    <button type="button" class="list-group-item list-group-item-action active pasos" aria-current="true">
+                        <a href="/consultar" class="stepper_link">Accede</a>
+                    </button>
+                    <button type="button" class="list-group-item list-group-item-action active pasos"><a href="/estado" class="stepper_link">Estado</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

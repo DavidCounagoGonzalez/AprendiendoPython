@@ -10,21 +10,17 @@ class Usuario(models.Model):
     email = models.EmailField(unique=True)
     telefono_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="El número debe tener el formatgo: '+999999999'. Hasta 15 dígitos es válido.")
     telefono = models.CharField(validators=[telefono_regex], max_length=17, blank=True)
+    
+    def __str__(self):
+        return self.nombre + ' ' + self.apellidos
+    
+class Tipo(models.Model):
+    tipo = models.CharField(max_length=124, blank=True)
+    
+    def __str__(self):
+        return self.tipo
 
 class Comunicado(models.Model):
-    class Tipo(models.TextChoices):
-        LEG = "1", "Incumplimiento de la legislación y/o normas internas"
-        ACT = "2", "Actuación inadecuada, no ética, o falta de integridad en el desempeño profesional"
-        TRA = "3", "Trato irrespetuoso, desigual o injusto"
-        DIS = "4", "Discriminación o violación de los derechos humanos"
-        VLC = "5", "Violencia, acoso o abuso"
-        COR = "6", "Corrupción y/o fraude"
-        BNQ = "7", "Conducta relacionada con el blanqueo de capitales"
-        DMG = "8", "Daños contra el medio ambiente"
-        SEG = "9", "Riesgos de seguridad y salud"
-        ACC = '10', "Actos contra la libre competencia"
-        INP = '11', "Infracción de la normativa de protección de datos"
-        
     class Avisado(models.TextChoices):
         SI = 'True', 'Si'
         NO = 'False', 'No'
@@ -37,7 +33,7 @@ class Comunicado(models.Model):
     
     token = models.CharField("Código del comunicado", max_length=12, unique=True)
     contraseña =  models.CharField(max_length=200, blank=False, validators=[MinLengthValidator(8)])
-    tipo = models.CharField(max_length=2, choices=Tipo.choices, default=Tipo.LEG)
+    tipo = models.ForeignKey(Tipo, default=1, on_delete=models.PROTECT)
     implicados = models.TextField(blank=True)
     descripcion = models.TextField()
     lugar = models.CharField(max_length=124)
@@ -47,3 +43,6 @@ class Comunicado(models.Model):
     pruebas = models.FileField(blank=True, null=True, upload_to="prueba/%Y/%m/%D/")
     solucionado = models.BooleanField(default=False)
     comunicante = models.ForeignKey(Usuario, blank=True, on_delete=models.PROTECT, null=True)
+    
+    def __str__(self):
+        return self.token
