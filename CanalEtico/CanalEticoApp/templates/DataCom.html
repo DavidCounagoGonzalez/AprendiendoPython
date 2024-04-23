@@ -8,7 +8,8 @@
                 <div class="d-flex flex-center flex-column flex-lg-row-fluid">
                     <div class="w-lg-500px p-9">
                         <h2>Consultar un comunicado</h2>
-                        <p>Introduce el código de tu comuinicado, el cual recibiste en tu correo o al final de realizar tu petición, junto a la contraseña que indicaste en el formulario.</p>
+                        <p>Introduce el código de tu comuinicado, el cual recibiste en tu correo o al final de realizar
+                            tu petición, junto a la contraseña que indicaste en el formulario.</p>
                         <p>{{ error }}</p>
                         <form class="form w-100" method="post">
                             {% csrf_token %}
@@ -23,14 +24,20 @@
         </div>
         <div class="col-12 col-md-5 bloque bloque-Info text-center sticky-md-top">
             <div class="sticky-top text-center">
+                {% load static %}
+                <a href="/"><img src="{% static 'media/logoCE.png' %}" alt="Logo" width="90" height="90"></a>
                 <h2>Pasos para el Comunicado</h2>
                 <div class="list-group lista-pasos text-center justify-content-center">
-                    <button type="button" class="list-group-item list-group-item-action active pasos" aria-current="true">
+                    <button type="button" class="list-group-item list-group-item-action active pasos"
+                        aria-current="true">
                         <a href="/comunicacion/forma/" class="stepper_link">Inicia</a>
                     </button>
-                    <button type="button" class="list-group-item list-group-item-action pasos active"><a href="/comunicacion/user/" class="stepper_link">Datos Personales</a></button>
-                    <button type="button" class="list-group-item list-group-item-action pasos active"><a href="/comunicacion/registro/" class="stepper_link">Datos Comunicado</a></button>
-                    <button type="button" class="list-group-item list-group-item-action pasos"><a href="/comunicacion/finalizar/" class="stepper_link">Final</a></button>
+                    <button type="button" class="list-group-item list-group-item-action pasos active"><a
+                            href="/comunicacion/user/" class="stepper_link">Datos Personales</a></button>
+                    <button type="button" class="list-group-item list-group-item-action pasos active"><a
+                            href="/comunicacion/registro/" class="stepper_link">Datos Comunicado</a></button>
+                    <button type="button" class="list-group-item list-group-item-action pasos"><a
+                            href="/comunicacion/finalizar/" class="stepper_link">Final</a></button>
                 </div>
             </div>
         </div>

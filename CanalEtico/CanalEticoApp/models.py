@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import RegexValidator, MinLengthValidator
+from datetime import datetime, date
 
 # Create your models here.
 
@@ -39,7 +40,7 @@ class Comunicado(models.Model):
     lugar = models.CharField(max_length=124)
     testigos = models.TextField(blank=True)
     avisado = models.BooleanField("Algún superior fue avisado?", choices= TRUE_FALSE_CHOICES, default='', null=True)
-    fecha = models.DateTimeField(auto_now_add = True)
+    fecha = models.DateField(auto_now_add = True, blank=True)
     pruebas = models.FileField(blank=True, null=True, upload_to="prueba/%Y/%m/%D/")
     solucionado = models.BooleanField(default=False)
     comunicante = models.ForeignKey(Usuario, blank=True, on_delete=models.PROTECT, null=True)

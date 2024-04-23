@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+<div class="mt-5">
+    <form action="/gestion/comunicados/" method="POST">
+        {% csrf_token %}
+
+        <div class="card mx-auto" style="width: 30rem;">
+            <div class="card-body">
+                <h5 class="card-title">Indica tus credenciales</h5>
+
+                {{ form | crispy }}
+
+                <button class="btn btn-sm btn-primary float-end" type="submit">Iniciar Sesión</button>
+            </div>
+        </div>
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">
+            {{error}}
+        </div>
+        {% endif %}
+
+    </form>
+</div>
+{% endblock %}

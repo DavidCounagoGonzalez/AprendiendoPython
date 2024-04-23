@@ -12,16 +12,20 @@
                             <div class="text-center mb-11">
                                 <h2>¿De que forma quiere hacer?</h2>
                                 <p>
-                                    Si escoge personal deberá realizar un formulario donde proporciona datos esenciales y recibirá el código de consulta a su correo.
-                                    Por otro lado de forma anónima irá directo a crear la consulta, pero deberá hacerse responsable de no perder el código entregado al finalizar.
+                                    Si escoge personal deberá realizar un formulario donde proporciona datos esenciales
+                                    y recibirá el código de consulta a su correo.
+                                    Por otro lado de forma anónima irá directo a crear la consulta, pero deberá hacerse
+                                    responsable de no perder el código entregado al finalizar.
                                 </p>
                             </div>
                             <div class="row g-3 mb-8 mt-5">
                                 <div class="col-md-6">
-                                    <button class="btn btn-primary w-100" name="forma" value="1" type="submit">Personal</button>
+                                    <button class="btn btn-primary w-100" name="forma" value="1"
+                                        type="submit">Personal</button>
                                 </div>
                                 <div class="col-md-6">
-                                    <button class="btn btn-Consulta w-100" name="forma" value="2" type="submit">Anónimo</button>
+                                    <button class="btn btn-Consulta w-100" name="forma" value="2"
+                                        type="submit">Anónimo</button>
                                 </div>
                             </div>
                         </form>
@@ -31,14 +35,20 @@
         </div>
         <div class="col-12 col-md-5 bloque bloque-Info text-center sticky-md-top">
             <div class="sticky-top text-center">
+                {% load static %}
+                <a href="/"><img src="{% static 'media/logoCE.png' %}" alt="Logo" width="90" height="90"></a>
                 <h2>Pasos para el Comunicado</h2>
                 <div class="list-group lista-pasos text-center justify-content-center">
-                    <button type="button" class="list-group-item list-group-item-action active pasos" aria-current="true">
+                    <button type="button" class="list-group-item list-group-item-action active pasos"
+                        aria-current="true">
                         <a href="/comunicacion/forma/" class="stepper_link">Inicia</a>
                     </button>
-                    <button type="button" class="list-group-item list-group-item-action pasos"><a href="/comunicacion/user/" class="stepper_link">Datos Personales</a></button>
-                    <button type="button" class="list-group-item list-group-item-action pasos"><a href="/comunicacion/registro/" class="stepper_link">Datos Comunicado</a></button>
-                    <button type="button" class="list-group-item list-group-item-action pasos"><a href="/comunicacion/finalizar/" class="stepper_link">Final</a></button>
+                    <button type="button" class="list-group-item list-group-item-action pasos"><a
+                            href="/comunicacion/user/" class="stepper_link">Datos Personales</a></button>
+                    <button type="button" class="list-group-item list-group-item-action pasos"><a
+                            href="/comunicacion/registro/" class="stepper_link">Datos Comunicado</a></button>
+                    <button type="button" class="list-group-item list-group-item-action pasos"><a
+                            href="/comunicacion/finalizar/" class="stepper_link">Final</a></button>
                 </div>
             </div>
         </div>

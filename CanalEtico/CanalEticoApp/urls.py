@@ -11,7 +11,9 @@ urlpatterns = [
     path('comunicacion/forma/' ,views.forma_comunicado, name='forma'),
     path('comunicacion/user/', views.user_info, name='userinfo'),
     path('comunicacion/registro/', views.data_comunicado, name='comData'),
-    path('comunicacion/finalizar/', views.finalizar, name='finalizar')
+    path('comunicacion/finalizar/', views.finalizar, name='finalizar'),
+    path('gestion/login/', views.logueo, name='logueo'),
+    path('gestion/comunicados/', views.gestion, name='gestion')
 ]
 
 if settings.DEBUG:
