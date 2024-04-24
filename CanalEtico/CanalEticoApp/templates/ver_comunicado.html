@@ -50,11 +50,15 @@
                     </div>
                     <div class="mb-3 col-sm-12">
                         <h5>Solución</h5>
+                        {% if comunicado.solucionado %}
+                        <p> {{ comunicado.solucion }} </p>
+                        {% else %}
                         <form action="" method="post">
                             {% csrf_token %}
                             {{ form | crispy }}
                             <button class="btn btn-primary w-40" type="submit">Enviar</button>
                         </form>
+                        {% endif %}
                     </div>
                 </div>
             </div>

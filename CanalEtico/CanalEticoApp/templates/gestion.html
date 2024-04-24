@@ -27,7 +27,7 @@
                                 <td>{{ comunicado.tipo }}</td>
                                 <td>{{ comunicado.comunicante }}</td>
                                 <td>{{ comunicado.fecha }}</td>
-                                <td><a href="#" class="btn btn-default ml-1"><i class="fa-regular fa-eye"></i></a></td>
+                                <td><a href="{{ comunicado.token }}" class="btn btn-default ml-1"><i class="fa-regular fa-eye"></i></a></td>
                             </tr>
                         {% endfor %}
                     </tbody>
