@@ -1,1 +1,39 @@
 {% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow mb-4">
+            <div
+                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <div class="col-6">
+                <h6 class="m-0 installfont-weight-bold text-primary">Comunicados</h6> 
+                </div>
+            </div>
+            <div class="card-body" id="card-table">
+                <table id="tabladatos" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Token</th>
+                            <th>Razón</th>
+                            <th>Persona</th>
+                            <th>Fecha</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for comunicado in comunicados %}
+                            <tr class="table {% if comunicado.solucionado %} table-success {% endif %}">
+                                <td>{{ comunicado.token }}</td>
+                                <td>{{ comunicado.tipo }}</td>
+                                <td>{{ comunicado.comunicante }}</td>
+                                <td>{{ comunicado.fecha }}</td>
+                                <td><a href="#" class="btn btn-default ml-1"><i class="fa-regular fa-eye"></i></a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -26,3 +26,9 @@ class ConsultaForm(ModelForm):
     class Meta:
         model = Comunicado
         fields = ['token', 'contraseña']
+        
+class SolucionForm(ModelForm):
+    
+    class Meta:
+        model = Comunicado
+        fields = ['solucion']

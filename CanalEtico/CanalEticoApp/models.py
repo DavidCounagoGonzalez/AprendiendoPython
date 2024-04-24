@@ -43,6 +43,7 @@ class Comunicado(models.Model):
     fecha = models.DateField(auto_now_add = True, blank=True)
     pruebas = models.FileField(blank=True, null=True, upload_to="prueba/%Y/%m/%D/")
     solucionado = models.BooleanField(default=False)
+    solucion = models.TextField(default='',  null=True)
     comunicante = models.ForeignKey(Usuario, blank=True, on_delete=models.PROTECT, null=True)
     
     def __str__(self):

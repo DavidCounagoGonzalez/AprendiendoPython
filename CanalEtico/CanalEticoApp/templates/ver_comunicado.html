@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow mb-4">
+            <div
+                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Comunicado</h6>                                    
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="mb-3 col-sm-8" style="border: 1px solid black;">
+                        <h3>Tipo</h3>
+                        <h6>{{ comunicado.tipo }}</h6>
+                    </div>
+                    <div class="mb-3 col-sm-4" style="border: 1px solid black;">
+                        <h3>Fecha</h3>
+                        <h6>{{ comunicado.fecha }}</h6>
+                    </div>
+                    <div class="mb-3 col-sm-6" style="border: 1px solid black;">
+                        <h5>Descripción</h5>
+                        <p>{{ comunicado.descripcion }}</p>
+                    </div>
+                    <div class="mb-3 col-sm-3" style="border: 1px solid black;">
+                        <h5>Implicados</h5>
+                        <p>{{ comunicado.implicados }}</p>
+                    </div>
+                    <div class="mb-3 col-sm-3" style="border: 1px solid black;">
+                        <h5>Testigos</h5>
+                        <p>{{ comunicado.testigos }}</p>
+                    </div>
+                    <div class="mb-3 col-sm-3" style="border: 1px solid black;">
+                        <h5>Lugar</h5>
+                        <p>{{ comunicado.lugar }}</p>
+                    </div>
+                    <div class="mb-3 col-sm-3" style="border: 1px solid black;">
+                        <h5>Superior Avisado</h5>
+                        <p>{{ comunicado.avisado }}</p>
+                    </div>
+                    <div class="mb-3 col-sm-3" style="border: 1px solid black;">
+                        <h5>Pruebas</h5>
+                        <p>{{ comunicado.pruebas }}</p>
+                    </div>
+                    <div class="mb-3 col-sm-3" style="border: 1px solid black;">
+                        <h5>Persona</h5>
+                        <p>{{ comunicado.comunicante }}</p>
+                    </div>
+                    <div class="mb-3 col-sm-12">
+                        <h5>Solución</h5>
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            {{ form | crispy }}
+                            <button class="btn btn-primary w-40" type="submit">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -148,3 +148,5 @@ EMAIL_HOST_PASSWORD = env('EMAIL_PASS')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 DATETIME_FORMAT = '%d-%m-%Y %H:%M:%S' 
+
+LOGIN_URL = '/gestion/login/'

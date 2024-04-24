@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from .forms import UsuarioForm, ComunicadoForm, ConsultaForm
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import UsuarioForm, ComunicadoForm, ConsultaForm, SolucionForm
 from django.http import HttpResponse
 from .models import Usuario, Comunicado, Tipo
 import secrets
@@ -189,3 +189,13 @@ def gestion(request):
     comunicados = Comunicado.objects.all()
     
     return render(request, 'gestion.html', {'comunicados': comunicados})
+
+def ver_comunicado(request, token):
+    comunicado = get_object_or_404(Comunicado, token=token)
+    if request.method == 'GET':
+        return render(request, 'ver_comunicado.html', {'comunicado': comunicado, 'form': SolucionForm})
+    else:
+        comunicado.solucion = request.POST['solucion']
+        comunicado.solucionado = True
+        comunicado.save()
+        return redirect('gestion')

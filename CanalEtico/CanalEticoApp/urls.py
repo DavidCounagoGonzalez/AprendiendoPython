@@ -3,6 +3,7 @@ from . import views
 
 from django.conf import settings
 from django.views.static import serve
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -13,7 +14,8 @@ urlpatterns = [
     path('comunicacion/registro/', views.data_comunicado, name='comData'),
     path('comunicacion/finalizar/', views.finalizar, name='finalizar'),
     path('gestion/login/', views.logueo, name='logueo'),
-    path('gestion/comunicados/', views.gestion, name='gestion')
+    path('gestion/comunicados/', login_required(views.gestion), name='gestion'),
+    path('gestion/comunicados/<str:token>', login_required(views.ver_comunicado), name='verCom')
 ]
 
 if settings.DEBUG:
