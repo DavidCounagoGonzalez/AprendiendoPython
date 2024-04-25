@@ -26,12 +26,8 @@ def logueo(request):
             return redirect('listar')
 
 def get_Comunicados(request):
-    queryBusca = request.session['buscar']
-    
-    if queryBusca:
-        comunicados = list(Comunicado.objects.filter(token__icontains = queryBusca).values())
-    else:
-        comunicados = list(Comunicado.objects.values())
+    comunicados = Comunicado.objects.values()
+    comunicados = list(comunicados.order_by( 'solucionado', 'fecha'))
         
     for comunicado in comunicados:
         del (comunicado['contraseña'])
@@ -49,8 +45,6 @@ def get_Comunicados(request):
     return JsonResponse(data)
         
 def gestion(request):
-    
-    request.session['buscar'] = request.GET.get('buscar', '')
     
     return render(request, 'gestion.html')
 

@@ -17,14 +17,13 @@
                         <div class="col-12 col-lg-8">
                             <div id="custom-search-input">
                                 <div class="input-group col-md-12">
-                                    <input type="text" class="form-control" placeholder="Buscar..." name="buscar" value="{{ request.GET.buscar }}">
-                                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                                    <input type="text" class="form-control" placeholder="Buscar..." name="buscar" id="buscar" value="{{ request.GET.buscar }}">
                                 </div>
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" name="solucionado" id="solucionado">
+                                <input class="form-check-input" type="checkbox" value="" name="solucionado" id="solucionado" checked>
                                 <label class="form-check-label" for="solucionado">
                                     Solucionado
                                 </label>
