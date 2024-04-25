@@ -1,5 +1,5 @@
 from django.urls import path, re_path
-from . import views
+from . import views, viewsAdmin
 
 from django.conf import settings
 from django.views.static import serve
@@ -13,9 +13,10 @@ urlpatterns = [
     path('comunicacion/user/', views.user_info, name='userinfo'),
     path('comunicacion/registro/', views.data_comunicado, name='comData'),
     path('comunicacion/finalizar/', views.finalizar, name='finalizar'),
-    path('gestion/login/', views.logueo, name='logueo'),
-    path('gestion/comunicados/', login_required(views.gestion), name='gestion'),
-    path('gestion/comunicados/<str:token>', login_required(views.ver_comunicado), name='verCom')
+    path('gestion/login/', viewsAdmin.logueo, name='logueo'),
+    path('gestion/listar/', login_required(viewsAdmin.get_Comunicados), name='gestion'),
+    path('gestion/comunicados/', login_required(viewsAdmin.gestion), name='listar'),
+    path('gestion/comunicados/<str:token>', login_required(viewsAdmin.ver_comunicado), name='verCom')
 ]
 
 if settings.DEBUG:

@@ -1,39 +1,58 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 <div class="row">
     <div class="col-12">
         <div class="card shadow mb-4">
-            <div
-                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <div class="col-6">
-                <h6 class="m-0 installfont-weight-bold text-primary">Comunicados</h6> 
+            <div>
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <div class="col-6">
+                        <h6 class="m-0 installfont-weight-bold text-primary">Comunicados</h6>
+                    </div>
                 </div>
             </div>
-            <div class="card-body" id="card-table">
-                <table id="tabladatos" class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Token</th>
-                            <th>Razón</th>
-                            <th>Persona</th>
-                            <th>Fecha</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for comunicado in comunicados %}
-                            <tr class="table {% if comunicado.solucionado %} table-success {% endif %}">
-                                <td>{{ comunicado.token }}</td>
-                                <td>{{ comunicado.tipo }}</td>
-                                <td>{{ comunicado.comunicante }}</td>
-                                <td>{{ comunicado.fecha }}</td>
-                                <td><a href="{{ comunicado.token }}" class="btn btn-default ml-1"><i class="fa-regular fa-eye"></i></a></td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            <div class="card-body">
+                <div class="row">
+                    <form method="get">
+                        <div class="col-12 col-lg-8">
+                            <div id="custom-search-input">
+                                <div class="input-group col-md-12">
+                                    <input type="text" class="form-control" placeholder="Buscar..." name="buscar" value="{{ request.GET.buscar }}">
+                                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" name="solucionado" id="solucionado">
+                                <label class="form-check-label" for="solucionado">
+                                    Solucionado
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
+        </div>
+        <div class="card-body" id="card-table">
+            <table id="tabladatos" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Token</th>
+                        <th>Razón</th>
+                        <th>Persona</th>
+                        <th>Fecha</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpoTabla">
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
-{% endblock %}
+</div>
+{% endblock content %}
+{% block extrajs %}
+<script src="{% static 'js/gestion.js' %}"></script>
+{% endblock extrajs %}
