@@ -32,3 +32,16 @@ class SolucionForm(ModelForm):
     class Meta:
         model = Comunicado
         fields = ['solucion']
+        
+class TipoFiltro(ModelForm):
+    
+    def __init__(self, *args, **kwargs):
+        super(TipoFiltro, self).__init__(*args, **kwargs)
+        self.fields['tipo'].widget.attrs = {
+            'required' : False
+        }
+        self.fields['tipo'].empty_label = ''
+    
+    class Meta:
+        model = Comunicado
+        fields = ['tipo']

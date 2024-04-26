@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<div class="row">
+{% load crispy_forms_tags %}
+<div class="row gx-0">
     <div class="col-12">
         <div class="card shadow mb-4">
             <div>
@@ -14,12 +15,15 @@
             <div class="card-body">
                 <div class="row">
                     <form method="get">
-                        <div class="col-12 col-lg-8">
+                        <div class="col-12 col-lg-6">
                             <div id="custom-search-input">
                                 <div class="input-group col-md-12">
                                     <input type="text" class="form-control" placeholder="Buscar..." name="buscar" id="buscar" value="{{ request.GET.buscar }}">
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            {{ form | crispy}}
                         </div>
                         <div class="mb-3">
                             <div class="form-check">

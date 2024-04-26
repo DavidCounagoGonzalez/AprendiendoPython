@@ -1,4 +1,4 @@
-const listarComunicados = async (busqueda, estado) => {
+const listarComunicados = async (busqueda, estado, tipo) => {
     try {
         const response = await fetch('/gestion/listar/');
         const data = await response.json();
@@ -6,6 +6,7 @@ const listarComunicados = async (busqueda, estado) => {
             let lista = "";
             data.comunicados.forEach((comunicado) => {
                 if (comunicado.token.includes(busqueda)) {
+                    if(comunicado.tipo_id.includes(tipo)){
                     if (estado) {
                         lista += `<tr class="table ${comunicado.solucionado ? 'table-success' : ''}">
                     <td>${comunicado.token}</td>
@@ -26,6 +27,7 @@ const listarComunicados = async (busqueda, estado) => {
                         }
                     }
                 }
+                }
             });
             cuerpoTabla.innerHTML = lista;
         } else {
@@ -37,7 +39,7 @@ const listarComunicados = async (busqueda, estado) => {
 }
 
 const cargaInicial = async () => {
-    await listarComunicados('', true);
+    await listarComunicados('', true, '');
 
     buscar.addEventListener("input", (event) => {
         if (solucionado.checked) {
@@ -45,7 +47,14 @@ const cargaInicial = async () => {
         } else {
             estado = false;
         }
-        listarComunicados(event.target.value, estado)
+
+        if (id_tipo.value === ''){
+            tipo = ''
+        }else{
+            tipo = id_tipo.options[id_tipo.selectedIndex].text
+        } 
+
+        listarComunicados(event.target.value, estado, tipo)
     })
 
     solucionado.addEventListener("change", (event) => {
@@ -54,8 +63,30 @@ const cargaInicial = async () => {
         } else {
             estado = false;
         }
-        console.log(estado)
-        listarComunicados(buscar.value, estado)
+
+        if (id_tipo.value === ''){
+            tipo = ''
+        }else{
+            tipo = id_tipo.options[id_tipo.selectedIndex].text
+        }  
+
+        listarComunicados(buscar.value, estado, tipo)
+    })
+
+    id_tipo.addEventListener("change", (event) => {
+        if (solucionado.checked) {
+            estado = true;
+        } else {
+            estado = false;
+        }
+
+        if (event.target.value === ''){
+            tipo = ''
+        }else{
+            tipo = event.target.options[event.target.selectedIndex].text
+        }  
+
+        listarComunicados(buscar.value, estado, tipo)
     })
 };
 

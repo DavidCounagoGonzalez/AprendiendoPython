@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import SolucionForm
+from .forms import SolucionForm, TipoFiltro
 from django.http import JsonResponse
 from .models import Comunicado, Usuario, Tipo
 from django.contrib.auth import login, authenticate
@@ -28,7 +28,7 @@ def logueo(request):
 def get_Comunicados(request):
     comunicados = Comunicado.objects.values()
     comunicados = list(comunicados.order_by( 'solucionado', 'fecha'))
-        
+    
     for comunicado in comunicados:
         del (comunicado['contraseña'])
         comunicado['tipo_id'] = Tipo.__str__(Tipo.objects.get(id=comunicado['tipo_id']))
@@ -46,7 +46,8 @@ def get_Comunicados(request):
         
 def gestion(request):
     
-    return render(request, 'gestion.html')
+    
+    return render(request, 'gestion.html', {'form' : TipoFiltro })
 
 def ver_comunicado(request, token):
     comunicado = get_object_or_404(Comunicado, token=token)

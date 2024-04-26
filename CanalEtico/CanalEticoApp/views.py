@@ -143,7 +143,7 @@ def data_comunicado(request):
             if request.method == 'GET':
                 return render(request, 'DataCom.html', {'form': ComunicadoForm})
             else:
-                form = ComunicadoForm(request.POST)
+                form = ComunicadoForm(request.POST, request.FILES)
                 if form.is_valid():
                     if secrets.compare_digest(request.POST['contraseña'], request.POST['contraseña2']):
                         new_Com = form.save(commit=False)
@@ -151,11 +151,11 @@ def data_comunicado(request):
                             form.cleaned_data['contraseña'])
                         new_Com.token = secrets.token_hex(6)
                         request.session['token'] = new_Com.token
+                        print(new_Com.pruebas)
                         try:
                             new_Com.comunicante_id = request.session['user']
                         except:
                             pass
-
                         email_comunicante(request)
                         new_Com.save()
                         return redirect('finalizar')
