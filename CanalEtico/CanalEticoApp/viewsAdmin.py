@@ -4,6 +4,9 @@ from django.http import JsonResponse
 from .models import Comunicado, Usuario, Tipo
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
+from django.conf import settings
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 
 def logueo(request):
     if request.method == 'GET':
@@ -56,5 +59,36 @@ def ver_comunicado(request, token):
     else:
         comunicado.solucion = request.POST['solucion']
         comunicado.solucionado = True
+        
+        id_user = comunicado.comunicante_id
+        
+        email_solucion(request, id_user, comunicado.token, comunicado.solucion)
         comunicado.save()
-        return redirect('gestion')
+        return redirect('listar')
+    
+def email_solucion(request, id_user, token, solucion):
+    try:
+        email = getEmailById(id_user)
+        asunto = 'Solucón a su comunicado'
+        template = render_to_string('email.html', {
+                                    'mensaje': solucion,
+                                    'codigo': 'Este es el código de su comunicado: ' + token,
+                                    'email': 'Desde el canal ético.'
+                                })
+
+        mail = EmailMessage(
+                            asunto,
+                            template,
+                            settings.EMAIL_HOST_USER,
+                            [email]
+                            )
+
+        mail.fail_silently = False
+        mail.send()
+    except:
+        pass
+    
+def getEmailById(id_user):
+    email_usuario = Usuario.objects.get(id=id_user)
+
+    return email_usuario.email

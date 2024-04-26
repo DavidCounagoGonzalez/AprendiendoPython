@@ -1,14 +1,12 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UsuarioForm, ComunicadoForm, ConsultaForm, SolucionForm
-from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, redirect
+from .forms import UsuarioForm, ComunicadoForm, ConsultaForm
+from django.http import HttpResponse
 from .models import Usuario, Comunicado, Tipo
 import secrets
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.conf import settings
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import AuthenticationForm
 
 # Create your views here.
 

@@ -35,6 +35,13 @@
                         <h4>Pruebas</h4>
                         <a href="/media/{{ x.pruebas }}" >Pepe</a>
                         {% endif %}
+
+                        <h4>Solución</h4>
+                        {% if x.solucion == '' %}
+                        <p>Aún no se ha solucionado</p>
+                        {% else %}
+                        <p>{{ x.solucion }}</p>
+                        {% endif %}
                     {% endfor %}
                     </div>
                 </div>
