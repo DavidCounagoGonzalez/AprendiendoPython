@@ -2,13 +2,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import SolucionForm, TipoFiltro
 from django.http import JsonResponse
 from .models import Comunicado, Usuario, Tipo
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.conf import settings
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 
 def logueo(request):
+    if request.user.is_authenticated:
+        return redirect('listar')
     if request.method == 'GET':
         return render(request, 'login.html', {
             'form': AuthenticationForm
@@ -27,6 +29,10 @@ def logueo(request):
             
             login(request, usuario)
             return redirect('listar')
+
+def cerrar_sesion(request):
+    logout(request)
+    return redirect('logueo')
 
 def get_Comunicados(request):
     comunicados = Comunicado.objects.values()
