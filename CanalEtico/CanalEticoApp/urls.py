@@ -20,7 +20,7 @@ urlpatterns = [
     path('gestion/comunicados/<str:token>', login_required(viewsAdmin.ver_comunicado), name='verCom')
 ]
 
-if settings.DEBUG:
+if settings.DEBUG: # ruta para guardar y mostrar los archivos enviados en los comunicados
     urlpatterns += [
         re_path(r'^media/(?P<path>.*)$',
             serve, {

@@ -8,22 +8,20 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.conf import settings
 
-# Create your views here.
-
 
 def index(request):
     return render(request, 'index.html')
 
 
 def consultar(request):
-    if request.method == 'GET':
+    if request.method == 'GET': # En caso de la request sea de tipo GET se cargará la págian con el formulario
         return render(request, 'consultar.html', {'form': ConsultaForm})
     else:
-        if Comunicado.objects.filter(token=request.POST['token']).count() > 0:
-            contra = getHashPass(request.POST['token'])
-            if check_password(request.POST['contraseña'], contra):
-                request.session['tokenConsulta'] = request.POST['token']
-                return redirect('revision')
+        if Comunicado.objects.filter(token=request.POST['token']).count() > 0: #En caso de POST primero se comprobará si el token existe en la BBDD
+            contra = getHashPass(request.POST['token']) #Se recoge la contraseña de dicho token  
+            if check_password(request.POST['contraseña'], contra): #Se comparan ambas 
+                request.session['tokenConsulta'] = request.POST['token'] # En caso de ser correcto se guarda el token en una session para cargar los datos a posterior.
+                return redirect('revision') #Se redireje al usuario a la página para ver la información de su comunicado
             else:
                 return render(request, 'consultar.html', {'form': ConsultaForm, 'error': 'Contraseña equivocada'})
         else:
@@ -31,21 +29,21 @@ def consultar(request):
 
 
 def getHashPass(codigo):
-    contraseña_Com = Comunicado.objects.get(token=codigo)
+    contraseña_Com = Comunicado.objects.get(token=codigo) #Consulta a la BBDD para recoger la contraseña por token
 
     return contraseña_Com.contraseña
 
 
 def revision(request):
-    # try:
+    try:
         data = Comunicado.objects.filter(
-            token=request.session['tokenConsulta']).values()
+            token=request.session['tokenConsulta']).values() #Recojo los datos del token solicitado
         for x in data:
-            del x['contraseña']
-            x['tipo_id'] = Tipo.objects.get(id=x['tipo_id'])
+            del x['contraseña'] #Elimino la contraseña de la lista
+            x['tipo_id'] = Tipo.objects.get(id=x['tipo_id']) #Muestro la descripción del tipo de comunicado
         return render(request, 'revision.html', {'data': data})
-    # except:
-    #     return redirect('index')
+    except:
+        return redirect('index')
 
 
 def forma_comunicado(request):
@@ -53,9 +51,9 @@ def forma_comunicado(request):
         return render(request, 'ComForma.html')
     else:
         request.session['forma'] = request.POST['forma']
-        if request.session['forma'] == '1':
+        if request.session['forma'] == '1': # Si la opción ha sido personal devolverá 1 
             return redirect('userinfo')
-        elif request.session['forma'] == '2':
+        elif request.session['forma'] == '2': # Si la opción ha sido anónima devolverá 2 
             return redirect('comData')
         else:
             return render(request, 'ComForma.html', {
@@ -63,7 +61,7 @@ def forma_comunicado(request):
             })
 
 
-def verifica_User(post):
+def verifica_User(post): #Esta función verifica que no exista un mismo correo en varios usuarios
     error = ''
 
     cuenta = Usuario.objects.filter(email=post['email']).count()
@@ -75,13 +73,13 @@ def verifica_User(post):
     return error
 
 
-def get_IdUsuario(email):
+def get_IdUsuario(email): #Esta función recoge el id de usuario mediante el email
     id_usuario = Usuario.objects.get(email=email)
 
     return id_usuario.id
 
 
-def getEmailById(id_user):
+def getEmailById(id_user): #Esta función recoge el email medianre el id de usuario
     email_usuario = Usuario.objects.get(id=id_user)
 
     return email_usuario.email
@@ -89,7 +87,7 @@ def getEmailById(id_user):
 
 def user_info(request):
     try:
-        if request.session['forma'] != '1' and request.session['forma'] != '3':
+        if request.session['forma'] != '1' and request.session['forma'] != '3': # Si elvalor de forma no es 1 o 3 quiere decir que el usuario no ha escogido personal, y no ha pasado por aquí
             return redirect('forma')
         else:
             if request.method == 'GET':
@@ -97,10 +95,10 @@ def user_info(request):
             else:
                 form = UsuarioForm(request.POST)
                 try:
-                    error = verifica_User(request.POST)
-                    new_User = form.save(commit=False)
-                    new_User.save()
-                    request.session['forma'] = request.POST['forma']
+                    error = verifica_User(request.POST) #Lanzamos la función para comprobar el correo
+                    new_User = form.save(commit=False) #Guardamos los datos pero sin escribirlos por el momento
+                    new_User.save() #Escribimos los datos en la BBDD
+                    request.session['forma'] = request.POST['forma'] #Pasamos el valor a 3 para que pueda acceder al siguiente form
                     request.session['user'] = get_IdUsuario(
                         request.POST['email'])
                     return redirect('comData')
@@ -110,7 +108,7 @@ def user_info(request):
         return HttpResponse('No tienes permiso para acceder prueba a volver al <a href="/">inicio</a>', status=401)
 
 
-def email_comunicante(request):
+def email_comunicante(request): #Función que redacta la estructura que tendrá el email y realiza el envio.
     try:
         email = getEmailById(request.session['user'])
         asunto = 'Código comunicado'
@@ -135,27 +133,26 @@ def email_comunicante(request):
 
 def data_comunicado(request):
     try:
-        if request.session['forma'] != '2' and request.session['forma'] != '3':
+        if request.session['forma'] != '2' and request.session['forma'] != '3': #Se puede acceder que con 2 en caso de seleccionar anoónimo o 3 si vienes de hacer el personal
             return redirect('forma')
         else:
             if request.method == 'GET':
                 return render(request, 'DataCom.html', {'form': ComunicadoForm})
             else:
-                form = ComunicadoForm(request.POST, request.FILES)
+                form = ComunicadoForm(request.POST, request.FILES) #Recogemos tanto valores como archivos de los input
                 if form.is_valid():
-                    if secrets.compare_digest(request.POST['contraseña'], request.POST['contraseña2']):
+                    if secrets.compare_digest(request.POST['contraseña'], request.POST['contraseña2']): #Comprobamos que las contraseñas coinciden
                         new_Com = form.save(commit=False)
                         new_Com.contraseña = make_password(
-                            form.cleaned_data['contraseña'])
-                        new_Com.token = secrets.token_hex(6)
+                            form.cleaned_data['contraseña']) #hasheamos la contraseña
+                        new_Com.token = secrets.token_hex(6) #Generamos el token para el comunicado
                         request.session['token'] = new_Com.token
-                        print(new_Com.pruebas)
                         try:
-                            new_Com.comunicante_id = request.session['user']
+                            new_Com.comunicante_id = request.session['user'] #SI existe el id de usuario lo añadimos al objeto
                         except:
                             pass
-                        email_comunicante(request)
-                        new_Com.save()
+                        email_comunicante(request) #Enviamos el email
+                        new_Com.save() #Guardamos el objeto en la bbdd
                         return redirect('finalizar')
                     else:
                         return render(request, 'DataCom.html', {'form': ComunicadoForm, 'error': 'Las contraseñas no coinciden'})
@@ -166,7 +163,7 @@ def data_comunicado(request):
         return HttpResponse('No tienes permiso para acceder prueba a volver al <a href="/">inicio</a>', status=401)
 
 
-def finalizar(request):
+def finalizar(request):#Tratamos de borrar los datos de sesión y finalmente mostramos una página con el código del comunicado.
     try:
         del request.session['user']
         del request.session['forma']

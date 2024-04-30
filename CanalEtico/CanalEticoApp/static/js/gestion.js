@@ -1,35 +1,34 @@
 const listarComunicados = async (busqueda, estado, tipo) => {
     try {
-        const response = await fetch('/gestion/listar/');
-        const data = await response.json();
-        if (data.message === "Success") {
+        const response = await fetch('/gestion/listar/'); //Recibe los datos en forma de json registrados en esa url
+        const data = await response.json(); //Transforma el json en un objeto de js
+        if (data.message === "Success") { //Comprobamos que se haya producido la transacción
             let lista = "";
-            data.comunicados.forEach((comunicado) => {
-                if (comunicado.token.includes(busqueda)) {
-                    if(comunicado.tipo_id.includes(tipo)){
-                    if (estado) {
-                        lista += `<tr class="table ${comunicado.solucionado ? 'table-success' : ''}">
+            data.comunicados.forEach((comunicado) => { //Recorremos los datos recibidos aplicando los filtros solicitados
+                if (comunicado.token.includes(busqueda)) { //Aquellos que el token contenga con lo indicado en el input
+                    if(comunicado.tipo_id.includes(tipo)){ //Aquellos que sean del mismo tipo indicado en el select
+                    if (estado) { //EN este if recogerá también los solucionados y en caso de estar solucionados también se mostrarán con fondo verde
+                        lista += `<tr class="table ${comunicado.solucionado ? 'table-success' : ''}"> 
                     <td>${comunicado.token}</td>
                     <td>${comunicado.tipo_id}</td>
                     <td>${comunicado.comunicante_id}</td>
                     <td>${comunicado.fecha}</td>
                     <td><a href="${comunicado.token}" class="btn btn-default ml-1"><i class="fa-regular fa-eye"></i></a></td>
                 </tr>`
-                    } else {
-                        if (comunicado.solucionado === false) {
-                            lista += `<tr class="table ${comunicado.solucionado ? 'table-success' : ''}">
+                    } else if(comunicado.solucionado === false) {
+                        lista += `<tr class="table ${comunicado.solucionado ? 'table-success' : ''}">
                     <td>${comunicado.token}</td>
                     <td>${comunicado.tipo_id}</td>
                     <td>${comunicado.comunicante_id}</td>
                     <td>${comunicado.fecha}</td>
                     <td><a href="${comunicado.token}" class="btn btn-default ml-1"><i class="fa-regular fa-eye"></i></a></td>
                     </tr>`
-                        }
+                        
                     }
                 }
                 }
             });
-            cuerpoTabla.innerHTML = lista;
+            cuerpoTabla.innerHTML = lista; //Añadimos la lista de filas guardadas posteriormente al cuerpod e la tabla en el html
         } else {
             alert("Comunicados no encontrados...")
         }
@@ -39,9 +38,11 @@ const listarComunicados = async (busqueda, estado, tipo) => {
 }
 
 const cargaInicial = async () => {
-    await listarComunicados('', true, '');
+    await listarComunicados('', true, ''); //Carga de inicio la función sin filtros
+    
+    //Los eventos se lanzan cada vez que se detecta un cambio en los inputs recogiendo los datos/estado del los demás paar cargar todos los filtros
 
-    buscar.addEventListener("input", (event) => {
+    buscar.addEventListener("input", (event) => { //Lanza la función cada vez que se detecta un añadido en el input text
         if (solucionado.checked) {
             estado = true;
         } else {
@@ -54,10 +55,10 @@ const cargaInicial = async () => {
             tipo = id_tipo.options[id_tipo.selectedIndex].text
         } 
 
-        listarComunicados(event.target.value, estado, tipo)
+        listarComunicados(event.target.value, estado, tipo) 
     })
 
-    solucionado.addEventListener("change", (event) => {
+    solucionado.addEventListener("change", (event) => { //Cada vez que cambia el estado del checkbox
         if (event.target.checked) {
             estado = true;
         } else {

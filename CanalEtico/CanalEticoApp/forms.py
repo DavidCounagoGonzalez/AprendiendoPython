@@ -10,10 +10,10 @@ class UsuarioForm(ModelForm):
         
 class ComunicadoForm(ModelForm):
     
-    contraseña = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', }))
+    contraseña = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', })) #Cambio su input a tipo contraseña
     contraseña2 = forms.CharField(label="Repite la Contraseña", max_length=200, validators=[MinLengthValidator(8)], widget=forms.PasswordInput(attrs={
         'class': 'form-control',
-    }))
+    })) #Creo un input para la contraseña comprobante
     
     class Meta:
         model = Comunicado
@@ -33,7 +33,7 @@ class SolucionForm(ModelForm):
         model = Comunicado
         fields = ['solucion']
         
-class TipoFiltro(ModelForm):
+class TipoFiltro(ModelForm): #Formulario que carga los datos de la tabla de tipos y añade un campo vacío para los filtros
     
     def __init__(self, *args, **kwargs):
         super(TipoFiltro, self).__init__(*args, **kwargs)

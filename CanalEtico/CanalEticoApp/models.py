@@ -1,8 +1,5 @@
 from django.db import models
 from django.core.validators import RegexValidator, MinLengthValidator
-from datetime import datetime, date
-
-# Create your models here.
 
 class Usuario(models.Model):
     nombre = models.CharField(max_length=35)
@@ -22,10 +19,6 @@ class Tipo(models.Model):
         return self.tipo
 
 class Comunicado(models.Model):
-    class Avisado(models.TextChoices):
-        SI = 'True', 'Si'
-        NO = 'False', 'No'
-        NS = 'None', 'No lo sé'
         
     TRUE_FALSE_CHOICES = (
         (True, 'Si'),
@@ -41,7 +34,7 @@ class Comunicado(models.Model):
     testigos = models.TextField(blank=True)
     avisado = models.BooleanField("Algún superior fue avisado?", choices= TRUE_FALSE_CHOICES, default='', null=True)
     fecha = models.DateField(auto_now_add = True, blank=True)
-    pruebas = models.FileField(blank=True, null=True, upload_to="prueba/%Y/%m/%D/")
+    pruebas = models.FileField(blank=True, null=True, upload_to="prueba/%Y/%m/%D/") #Se guardan dentro de media en carpetas según la fecha
     solucionado = models.BooleanField(default=False)
     solucion = models.TextField(default='',  null=True)
     comunicante = models.ForeignKey(Usuario, blank=True, on_delete=models.PROTECT, null=True)

@@ -9,9 +9,6 @@
                     <div class="w-lg-500px p-9">
                         <h2>Su Comunicado</h2>
                     {% for x in data %}
-                        <h4>Resolución</h4>
-                        <p>{% if x.solucionado %} Tu comunicado ya ha sido revisado {% else %} Aún no se ha revisado {% endif %}</p>
-
                         {% if x.implicados %}
                         <h4>Implicados</h4>
                         <p> {{ x.implicados }}</p>
