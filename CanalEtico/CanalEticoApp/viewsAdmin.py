@@ -63,6 +63,7 @@ def ver_comunicado(request, token):
     
     else: #En caso de dar una solución se actualiza el comunicando dandole la solucióne escrita y pasando el estado a solucionado.
         comunicado.solucionado = True
+        comunicado.solucion = request.POST['solucion']
         
         id_user = comunicado.comunicante_id 
         
