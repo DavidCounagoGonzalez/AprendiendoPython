@@ -42,3 +42,21 @@ class CriaturaModel():
             
         except Exception as ex:
             raise Exception(ex)
+        
+    @classmethod
+    def getById(self, id):
+        try:
+            connection  = get_connection()
+            with connection.cursor() as cursor:
+                cursor.execute('SELECT * FROM public."EldenDexApp_creatures" WHERE id = %s',(id,))
+                row = cursor.fetchone()
+                criatura = None
+                if row != None:
+                    criatura=Criatura(row[0], row[1], row[2], row[3], row[4], row[5])
+                    criatura = criatura.to_json()
+                    
+            connection.close()
+            return criatura
+        
+        except Exception as ex:
+            raise Exception(ex)

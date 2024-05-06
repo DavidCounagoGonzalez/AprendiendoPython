@@ -22,3 +22,14 @@ def getCriaturaByName(name):
         return jsonify(criaturas)
     except Exception as ex:
         return jsonify({'mensaje': str(ex)}), 500
+    
+@main.route('/id/<id>')
+def getCriaturaById(id):
+    try:
+        criatura = CriaturaModel.getById(id)
+        if criatura != None:
+            return jsonify(criatura)
+        else:
+            return jsonify({}), 404
+    except Exception as ex:
+        return jsonify({'mensaje': str(ex)}), 500
