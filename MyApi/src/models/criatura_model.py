@@ -60,3 +60,53 @@ class CriaturaModel():
         
         except Exception as ex:
             raise Exception(ex)
+        
+    @classmethod
+    def addCriatura(self, criatura):
+        try:
+            connection  = get_connection()
+            with connection.cursor() as cursor:
+                cursor.execute("""INSERT INTO public."EldenDexApp_creatures"
+                               (id, name, image, description, location, drops)
+	                                VALUES (%s, %s, %s, %s, %s, %s)""", (criatura.id, criatura.name, criatura.image, criatura.description, 
+                                                                        criatura.location, criatura.drops))
+                
+                affected_rows = cursor.rowcount
+                connection.commit()        
+            connection.close()
+            return affected_rows
+        
+        except Exception as ex:
+            raise Exception(ex)
+        
+    @classmethod
+    def deleteCriatura(self, criatura):
+        try:
+            connection  = get_connection()
+            with connection.cursor() as cursor:
+                cursor.execute('DELETE FROM public."EldenDexApp_creatures" WHERE id =' + "'{}'".format(criatura.id))
+                
+                affected_rows = cursor.rowcount
+                connection.commit()        
+            connection.close()
+            return affected_rows
+        
+        except Exception as ex:
+            raise Exception(ex)
+        
+    @classmethod
+    def updateCriatura(self, criatura):
+        try:
+            connection  = get_connection()
+            with connection.cursor() as cursor:
+                cursor.execute("""UPDATE public."EldenDexApp_creatures" SET name='{0}', image='{1}', description='{2}', location='{3}', drops= ARRAY{4}
+                                    WHERE id = """.format(criatura.name, criatura.image, criatura.description, criatura.location, criatura.drops) + 
+                                                "'{}'".format(criatura.id))
+                
+                affected_rows = cursor.rowcount
+                connection.commit()        
+            connection.close()
+            return affected_rows
+        
+        except Exception as ex:
+            raise Exception(ex)

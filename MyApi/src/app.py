@@ -1,11 +1,14 @@
 from flask import Flask
 from config import config
+from flask_cors import CORS
 
 # Routes
 from routes import criatura
 
 app = Flask(__name__)
 app.json.sort_keys = False # Quitar la ordenaciónd de keys por defecto
+
+# CORS(app,resources={"*":{"origins": "http://localhost:9000"}}) # Esto habilita la api para conectarla a otras apps
 
 def page_not_found(error):
     return "<h1>Not found page</h1>", 404
