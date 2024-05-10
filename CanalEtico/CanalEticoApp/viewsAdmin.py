@@ -7,6 +7,11 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.conf import settings
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
+import requests
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 def logueo(request):
     if request.user.is_authenticated: #Si el usuario ya está logueado lo redirige a la vista de los comunicados
@@ -57,6 +62,18 @@ def gestion(request): #cargamos la vista de los comunicados con u  formulario pa
     return render(request, 'gestion.html', {'form' : TipoFiltro })
 
 def ver_comunicado(request, token):
+    
+    url = 'http://127.0.0.1:8000/api/comunicado/?token__contains=' + token
+    username = env('USUARIO_API')
+    contra = env('PASS_API')
+    
+    response = requests.get(url, auth=(username, contra))
+    
+    if response.status_code == 200:
+        data = response.json()
+        data = data['results'][0]
+        print(data['token'])
+    
     comunicado = get_object_or_404(Comunicado, token=token) #Si no conseguimos un objeto Comunicado con el token pasado por url devolvemos un 404
     if request.method == 'GET':
         return render(request, 'ver_comunicado.html', {'comunicado': comunicado, 'form': SolucionForm}) #cargamos el comunicado con sus datos y un textfield en caso de que este aún no tenga solución, en su defecto se mostrará esta.
