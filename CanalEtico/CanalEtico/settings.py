@@ -46,7 +46,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'CanalEticoApp',
     "crispy_forms",
-    'crispy_bootstrap5'
+    'crispy_bootstrap5',
+    'rest_framework',
+    'coreapi',
+    'django_filters'
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -150,3 +153,13 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 DATETIME_FORMAT = '%d-%m-%Y %H:%M:%S' 
 
 LOGIN_URL = '/gestion/login/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 25,
+    'DEFAULT_FILTER_BAKCENDS': ['django_filters.rest_framework.DjangoFilterBackend',]
+}
