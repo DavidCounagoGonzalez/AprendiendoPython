@@ -4,12 +4,12 @@ from CanalEticoApp.models import Comunicado, Tipo, Usuario
 class UsuarioSerializer(ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['id', 'nombre', 'apellidos', 'relacion', 'email', 'telefono']
+        fields = '__all__'
         
 class TipoSerializer(ModelSerializer):
     class Meta:
         model = Tipo
-        fields = ['id', 'tipo']
+        fields = '__all__'
         
 class ComunicadoSerializer(ModelSerializer):
     tipo = TipoSerializer()
@@ -17,4 +17,9 @@ class ComunicadoSerializer(ModelSerializer):
     
     class Meta:
         model = Comunicado
-        fields = ['token', 'contraseña', 'implicados', 'descripcion', 'lugar', 'testigos', 'avisado', 'fecha', 'pruebas', 'solucionado', 'tipo', 'comunicante', 'solucion']
+        fields = '__all__'
+        
+class ComunicadoUpdateSerializer(ModelSerializer):
+    class Meta:
+        model = Comunicado
+        fields = '__all__'

@@ -9,9 +9,11 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 import requests
 import environ
-
 env = environ.Env()
 environ.Env.read_env()
+
+username = env('USUARIO_API')
+contra = env('PASS_API')
 
 def logueo(request):
     if request.user.is_authenticated: #Si el usuario ya está logueado lo redirige a la vista de los comunicados
@@ -39,19 +41,26 @@ def cerrar_sesion(request): #función para cerrar la sesión
     return redirect('logueo')
 
 def get_Comunicados(request):
-    comunicados = Comunicado.objects.values() #Recogemos todos los comunicados
-    comunicados = list(comunicados.order_by( 'solucionado', 'fecha')) # Los ordenamos de manera ascendente primero los no solucionados y por fecha
     
-    for comunicado in comunicados:
+    url_get = 'http://127.0.0.1:8000/api/comunicado/'
+    response = requests.get(url_get, auth=(username, contra))
+    
+    if response.status_code == 200:
+        data = response.json()
+    
+    # comunicados = Comunicado.objects.values() #Recogemos todos los comunicados
+    # comunicados = list(comunicados.order_by( 'solucionado', 'fecha')) # Los ordenamos de manera ascendente primero los no solucionados y por fecha
+    
+    for comunicado in data['results']:
         del (comunicado['contraseña']) #Eliminamos la contraseña guardada en cada uno ya que no la queremos 
-        comunicado['tipo_id'] = Tipo.__str__(Tipo.objects.get(id=comunicado['tipo_id'])) #Recogemos la descripción coincidente al tipo de comunicado
+        comunicado['tipo'] = comunicado['tipo']['tipo'] #Recogemos la descripción coincidente al tipo de comunicado
         try:
-            comunicado['comunicante_id'] = Usuario.__str__(Usuario.objects.get(id=comunicado['comunicante_id'])) #En caso de ser personal mostramos el nombre
+            comunicado['comunicante'] = comunicado['comunicante']['nombre'] + ' ' + comunicado['comunicante']['apellidos'] #En caso de ser personal mostramos el nombre
         except:
-            comunicado['comunicante_id'] = ''
+            comunicado['comunicante'] = ''
      
-    if (len(comunicados)>0):
-        data = {'message': 'Success', 'comunicados': comunicados} #Si se han encontrado comunicados los devolvemos en forma de json
+    if (len(data['count'])>0):
+        data = {'message': 'Success', 'comunicados': data['results']} #Si se han encontrado comunicados los devolvemos en forma de json
     else:
         data = {'message': 'No se encontraron'}
     
@@ -62,30 +71,38 @@ def gestion(request): #cargamos la vista de los comunicados con u  formulario pa
     return render(request, 'gestion.html', {'form' : TipoFiltro })
 
 def ver_comunicado(request, token):
-    
-    url = 'http://127.0.0.1:8000/api/comunicado/?token__contains=' + token
-    username = env('USUARIO_API')
-    contra = env('PASS_API')
-    
-    response = requests.get(url, auth=(username, contra))
-    
-    if response.status_code == 200:
-        data = response.json()
-        data = data['results'][0]
-        print(data['token'])
-    
-    comunicado = get_object_or_404(Comunicado, token=token) #Si no conseguimos un objeto Comunicado con el token pasado por url devolvemos un 404
+      
+    # comunicado = get_object_or_404(Comunicado, token=token) #Si no conseguimos un objeto Comunicado con el token pasado por url devolvemos un 404
     if request.method == 'GET':
-        return render(request, 'ver_comunicado.html', {'comunicado': comunicado, 'form': SolucionForm}) #cargamos el comunicado con sus datos y un textfield en caso de que este aún no tenga solución, en su defecto se mostrará esta.
+        url_get = 'http://127.0.0.1:8000/api/comunicado/' + token + '/'
+        response = requests.get(url_get, auth=(username, contra))
     
-    else: #En caso de dar una solución se actualiza el comunicando dandole la solucióne escrita y pasando el estado a solucionado.
-        comunicado.solucionado = True
-        comunicado.solucion = request.POST['solucion']
+        if response.status_code == 200:
+            data = response.json()
         
-        id_user = comunicado.comunicante_id 
+        data['tipo'] = data['tipo']['tipo']
+        if data['comunicante']:
+            data['comunicante'] = data['comunicante']['nombre'] + ' ' + data['comunicante']['apellidos']
         
-        email_solucion(request, id_user, comunicado.token, comunicado.solucion) #Mandamos el email con el token del comunicado y su solución, en caso de que haya a quien enviarlo.
-        comunicado.save()
+        return render(request, 'ver_comunicado.html', {'comunicado': data, 'form': SolucionForm}) #cargamos el comunicado con sus datos y un textfield en caso de que este aún no tenga solución, en su defecto se mostrará esta.
+    
+    elif request.method == 'POST': #En caso de dar una solución se actualiza el comunicando dandole la solucióne escrita y pasando el estado a solucionado.
+        url_change = 'http://127.0.0.1:8000/api/comunicadoCambios/' + token + '/'
+        response = requests.get(url_change, auth=(username, contra))
+    
+        if response.status_code == 200:
+            data = response.json()
+            
+        data['solucionado'] = True
+        data['solucion'] = request.POST['solucion']
+        
+        if (data['comunicante']):
+            id_user = data['comunicante']
+            email_solucion(request, id_user, data['token'], data['solucion']) #Mandamos el email con el token del comunicado y su solución, en caso de que haya a quien enviarlo.
+          
+        # comunicado.save()
+        res  = requests.put(url_change, data=data, auth=(username, contra))
+        print(res)
         return redirect('listar')
     
 def email_solucion(request, id_user, token, solucion): #Creamos la estructura y envio del email, con un try por si no existe el usuario.
