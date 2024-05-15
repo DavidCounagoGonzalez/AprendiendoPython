@@ -3,6 +3,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from CanalEticoApp.models import Comunicado, Usuario, Tipo
 from CanalEticoApp.api.serializers import ComunicadoSerializer, UsuarioSerializer, TipoSerializer, ComunicadoUpdateSerializer
 from rest_framework.response import Response
+from rest_framework import status
 
 class ComunicadoApiViewSet(ModelViewSet):
     serializer_class = ComunicadoSerializer

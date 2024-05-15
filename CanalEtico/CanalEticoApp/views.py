@@ -7,6 +7,15 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.conf import settings
+import requests
+import environ
+import inspect
+
+env = environ.Env()
+environ.Env.read_env()
+
+username = env('USUARIO_API')
+contra = env('PASS_API')
 
 
 def index(request):
@@ -132,7 +141,7 @@ def email_comunicante(request): #Función que redacta la estructura que tendrá 
 
 
 def data_comunicado(request):
-    try:
+    # try:
         if request.session['forma'] != '2' and request.session['forma'] != '3': #Se puede acceder que con 2 en caso de seleccionar anoónimo o 3 si vienes de hacer el personal
             return redirect('forma')
         else:
@@ -151,16 +160,36 @@ def data_comunicado(request):
                             new_Com.comunicante_id = request.session['user'] #SI existe el id de usuario lo añadimos al objeto
                         except:
                             pass
+                        if(new_Com.pruebas):
+                            pruebas = request.FILES['pruebas']
+                        else:
+                            pruebas = ''
+                        tipo = request.POST['tipo']
+                        
+                        data = {
+                            'token': new_Com.token,
+                            'contraseña': new_Com.contraseña,
+                            'implicados': new_Com.implicados,
+                            'descripcion': new_Com.descripcion,
+                            'lugar': new_Com.lugar,
+                            'testigos': new_Com.testigos,
+                            'avisado': new_Com.avisado,
+                            'pruebas': pruebas,
+                            'tipo': tipo,
+                            'comunicante': new_Com.comunicante_id,
+                        }
                         email_comunicante(request) #Enviamos el email
-                        new_Com.save() #Guardamos el objeto en la bbdd
+                        
+                        response = requests.post('http://127.0.0.1:8000/api/comunicadoCambios/', data=data, auth=(username, contra))
+                        # new_Com.save() #Guardamos el objeto en la bbdd
                         return redirect('finalizar')
                     else:
                         return render(request, 'DataCom.html', {'form': ComunicadoForm, 'error': 'Las contraseñas no coinciden'})
                 else:
 
                     return render(request, 'DataCom.html', {'form': ComunicadoForm, 'error': 'revise los datos'})
-    except:
-        return HttpResponse('No tienes permiso para acceder prueba a volver al <a href="/">inicio</a>', status=401)
+    # except:
+    #     return HttpResponse('No tienes permiso para acceder, prueba a volver al <a href="/">inicio</a>', status=401)
 
 
 def finalizar(request):#Tratamos de borrar los datos de sesión y finalmente mostramos una página con el código del comunicado.

@@ -163,3 +163,5 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 25,
     'DEFAULT_FILTER_BAKCENDS': ['django_filters.rest_framework.DjangoFilterBackend',]
 }
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
