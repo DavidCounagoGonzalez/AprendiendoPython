@@ -9,7 +9,10 @@ from django.template.loader import render_to_string
 from django.conf import settings
 import requests
 import environ
-import inspect
+from CanalEticoApp.api.serializers import ComunicadoSerializer
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework.test import APIRequestFactory
 
 env = environ.Env()
 environ.Env.read_env()
@@ -156,14 +159,22 @@ def data_comunicado(request):
                             form.cleaned_data['contraseña']) #hasheamos la contraseña
                         new_Com.token = secrets.token_hex(6) #Generamos el token para el comunicado
                         request.session['token'] = new_Com.token
+                        
+                        print(form.cleaned_data['pruebas'])
+                        
                         try:
                             new_Com.comunicante_id = request.session['user'] #SI existe el id de usuario lo añadimos al objeto
                         except:
                             pass
-                        if(new_Com.pruebas):
-                            pruebas = request.FILES['pruebas']
+                        
+                        if 'pruebas' in request.FILES:
+                            archivos = {
+                                'pruebas' : (request.FILES['pruebas'].name, request.FILES['pruebas'], request.FILES['pruebas'].content_type)
+                            }
+                            
                         else:
-                            pruebas = ''
+                            archivos = None
+                            
                         tipo = request.POST['tipo']
                         
                         data = {
@@ -174,15 +185,17 @@ def data_comunicado(request):
                             'lugar': new_Com.lugar,
                             'testigos': new_Com.testigos,
                             'avisado': new_Com.avisado,
-                            'pruebas': pruebas,
                             'tipo': tipo,
-                            'comunicante': new_Com.comunicante_id,
+                            'comunicante': new_Com.comunicante_id or '',
                         }
                         email_comunicante(request) #Enviamos el email
                         
-                        response = requests.post('http://127.0.0.1:8000/api/comunicadoCambios/', data=data, auth=(username, contra))
+                        response = requests.post('http://127.0.0.1:8000/api/comunicadoCambios/', data=data, files=archivos, auth=(username, contra))
                         # new_Com.save() #Guardamos el objeto en la bbdd
-                        return redirect('finalizar')
+                        if response.status_code == 201:
+                            return redirect('finalizar')
+                        else:
+                            return render(request, 'DataCom.html', {'form': ComunicadoForm, 'error': 'Error al crear'})
                     else:
                         return render(request, 'DataCom.html', {'form': ComunicadoForm, 'error': 'Las contraseñas no coinciden'})
                 else:
@@ -190,7 +203,6 @@ def data_comunicado(request):
                     return render(request, 'DataCom.html', {'form': ComunicadoForm, 'error': 'revise los datos'})
     # except:
     #     return HttpResponse('No tienes permiso para acceder, prueba a volver al <a href="/">inicio</a>', status=401)
-
 
 def finalizar(request):#Tratamos de borrar los datos de sesión y finalmente mostramos una página con el código del comunicado.
     try:

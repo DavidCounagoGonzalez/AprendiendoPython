@@ -164,4 +164,5 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BAKCENDS': ['django_filters.rest_framework.DjangoFilterBackend',]
 }
 
-DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 100000  # Ajusta este valor según sea necesario
+DATA_UPLOAD_MAX_MEMORY_SIZE = 2621440  # 2.5MB, ajusta según sea necesario
