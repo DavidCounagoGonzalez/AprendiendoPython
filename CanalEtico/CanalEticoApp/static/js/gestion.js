@@ -1,8 +1,10 @@
-const listarComunicados = async (busqueda, estado, tipo) => {
+const listarComunicados = async (busqueda, estado, tipo, page) => {
     try {
-        const response = await fetch('/api/comunicado/'); //Recibe los datos en forma de json registrados en esa url
+        const response = await fetch('/api/comunicado/?page=' + page.toString()); //Recibe los datos en forma de json registrados en esa url
         const data = await response.json(); //Transforma el json en un objeto de js
-        
+
+        document.getElementById('current-page').innerText = page;
+
         if (data.count >= 1) { //Comprobamos que se haya producido la transacción
             let lista = "";
             data.results.forEach((comunicado) => { //Recorremos los datos recibidos aplicando los filtros solicitados
@@ -48,7 +50,7 @@ const listarComunicados = async (busqueda, estado, tipo) => {
 }
 
 const cargaInicial = async () => {
-    await listarComunicados('', true, ''); //Carga de inicio la función sin filtros
+    await listarComunicados('', true, '', 1); //Carga de inicio la función sin filtros
     
     //Los eventos se lanzan cada vez que se detecta un cambio en los inputs recogiendo los datos/estado del los demás paar cargar todos los filtros
 
@@ -65,7 +67,7 @@ const cargaInicial = async () => {
             tipo = id_tipo.options[id_tipo.selectedIndex].text
         } 
 
-        listarComunicados(event.target.value, estado, tipo) 
+        listarComunicados(event.target.value, estado, tipo, parseInt(document.getElementById('current-page').innerText)) 
     })
 
     solucionado.addEventListener("change", (event) => { //Cada vez que cambia el estado del checkbox
@@ -81,7 +83,7 @@ const cargaInicial = async () => {
             tipo = id_tipo.options[id_tipo.selectedIndex].text
         }  
 
-        listarComunicados(buscar.value, estado, tipo)
+        listarComunicados(buscar.value, estado, tipo, parseInt(document.getElementById('current-page').innerText))
     })
 
     id_tipo.addEventListener("change", (event) => {
@@ -97,8 +99,78 @@ const cargaInicial = async () => {
             tipo = event.target.options[event.target.selectedIndex].text
         }  
 
-        listarComunicados(buscar.value, estado, tipo)
+        listarComunicados(buscar.value, estado, tipo, parseInt(document.getElementById('current-page').innerText))
     })
+
+    document.getElementById('first-page').addEventListener('click', function() {
+        if (solucionado.checked) {
+            estado = true;
+        } else {
+            estado = false;
+        }
+
+        if (id_tipo.value === ''){
+            tipo = ''
+        }else{
+            tipo = id_tipo.options[id_tipo.selectedIndex].text
+        } 
+        listarComunicados(buscar.value, estado, tipo, 1);
+    });
+    
+    document.getElementById('prev-page').addEventListener('click', function() {
+        if (solucionado.checked) {
+            estado = true;
+        } else {
+            estado = false;
+        }
+
+        if (id_tipo.value === ''){
+            tipo = ''
+        }else{
+            tipo = id_tipo.options[id_tipo.selectedIndex].text
+        } 
+        const currentPage = parseInt(document.getElementById('current-page').innerText);
+        if (currentPage > 1) {
+            listarComunicados(buscar.value, estado, tipo, currentPage - 1);
+        }
+    });
+    
+    document.getElementById('next-page').addEventListener('click', function() {
+        if (solucionado.checked) {
+            estado = true;
+        } else {
+            estado = false;
+        }
+
+        if (id_tipo.value === ''){
+            tipo = ''
+        }else{
+            tipo = id_tipo.options[id_tipo.selectedIndex].text
+        } 
+        const currentPage = parseInt(document.getElementById('current-page').innerText);
+        const totalPages = parseInt(document.getElementById('total-pages').innerText);
+        if (currentPage < totalPages) {
+            listarComunicados(buscar.value, estado, tipo, currentPage + 1);
+        }
+    });
+    
+    document.getElementById('last-page').addEventListener('click', function() {
+        if (solucionado.checked) {
+            estado = true;
+        } else {
+            estado = false;
+        }
+
+        if (id_tipo.value === ''){
+            tipo = ''
+        }else{
+            tipo = id_tipo.options[id_tipo.selectedIndex].text
+        } 
+        const totalPages = parseInt(document.getElementById('total-pages').innerText);
+        listarComunicados(buscar.value, estado, tipo, totalPages);
+    });
+    
+
 };
 
 window.addEventListener("load", async () => {

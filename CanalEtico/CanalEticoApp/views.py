@@ -9,10 +9,6 @@ from django.template.loader import render_to_string
 from django.conf import settings
 import requests
 import environ
-from CanalEticoApp.api.serializers import ComunicadoSerializer
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework.test import APIRequestFactory
 
 env = environ.Env()
 environ.Env.read_env()
@@ -98,26 +94,39 @@ def getEmailById(id_user): #Esta función recoge el email medianre el id de usua
 
 
 def user_info(request):
-    try:
+    # try:
         if request.session['forma'] != '1' and request.session['forma'] != '3': # Si elvalor de forma no es 1 o 3 quiere decir que el usuario no ha escogido personal, y no ha pasado por aquí
             return redirect('forma')
         else:
             if request.method == 'GET':
                 return render(request, 'InfoUser.html', {'form': UsuarioForm})
             else:
-                form = UsuarioForm(request.POST)
+                # form = UsuarioForm(request.POST)
                 try:
                     error = verifica_User(request.POST) #Lanzamos la función para comprobar el correo
-                    new_User = form.save(commit=False) #Guardamos los datos pero sin escribirlos por el momento
-                    new_User.save() #Escribimos los datos en la BBDD
+                    
+                    # form.save() #Guardamos los datos pero sin escribirlos por el momento
+                    
+                    data = {
+                        'nombre' : request.POST['nombre'],
+                        'apellidos' : request.POST['apellidos'],
+                        'relacion' : request.POST['relacion'],
+                        'email' : request.POST['email'],
+                        'telefono' : request.POST['telefono']
+                    }
+                    
+                    print(request.POST['email'])
+                    response = requests.post('http://127.0.0.1:8000/api/usuario/', data=data, auth=(username, contra))
                     request.session['forma'] = request.POST['forma'] #Pasamos el valor a 3 para que pueda acceder al siguiente form
                     request.session['user'] = get_IdUsuario(
                         request.POST['email'])
-                    return redirect('comData')
+                    
+                    if response.status_code == 201:
+                        return redirect('comData')
                 except ValueError:
                     return render(request, 'InfoUser.html', {'form': UsuarioForm, 'error': error})
-    except:
-        return HttpResponse('No tienes permiso para acceder prueba a volver al <a href="/">inicio</a>', status=401)
+    # except:
+    #     return HttpResponse('No tienes permiso para acceder prueba a volver al <a href="/">inicio</a>', status=401)
 
 
 def email_comunicante(request): #Función que redacta la estructura que tendrá el email y realiza el envio.
@@ -142,9 +151,8 @@ def email_comunicante(request): #Función que redacta la estructura que tendrá 
     except:
         pass
 
-
 def data_comunicado(request):
-    # try:
+    try:
         if request.session['forma'] != '2' and request.session['forma'] != '3': #Se puede acceder que con 2 en caso de seleccionar anoónimo o 3 si vienes de hacer el personal
             return redirect('forma')
         else:
@@ -201,8 +209,8 @@ def data_comunicado(request):
                 else:
 
                     return render(request, 'DataCom.html', {'form': ComunicadoForm, 'error': 'revise los datos'})
-    # except:
-    #     return HttpResponse('No tienes permiso para acceder, prueba a volver al <a href="/">inicio</a>', status=401)
+    except:
+        return HttpResponse('No tienes permiso para acceder, prueba a volver al <a href="/">inicio</a>', status=401)
 
 def finalizar(request):#Tratamos de borrar los datos de sesión y finalmente mostramos una página con el código del comunicado.
     try:
