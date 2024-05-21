@@ -80,6 +80,31 @@ body {
     color: #C4D4E0;
 }
 
+.container-fluid {
+    flex: 1;
+}
+
+.sidebar {
+    min-height: 100vh;
+    background-color: #343a40;
+}
+
+.sidebar .nav-link {
+    font-weight: bold;
+    color: wheat;
+    transition: color 0.2s;
+}
+.sidebar .nav-link:hover {
+    color: #b68742;
+}
+
+.footer {
+    background-color: rgb(33, 37, 41);
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+
 @media only screen and (max-width: 768px) {
 
     html,

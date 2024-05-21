@@ -92,7 +92,6 @@ def getEmailById(id_user): #Esta función recoge el email medianre el id de usua
 
     return email_usuario.email
 
-
 def user_info(request):
     # try:
         if request.session['forma'] != '1' and request.session['forma'] != '3': # Si elvalor de forma no es 1 o 3 quiere decir que el usuario no ha escogido personal, y no ha pasado por aquí
@@ -127,7 +126,6 @@ def user_info(request):
                     return render(request, 'InfoUser.html', {'form': UsuarioForm, 'error': error})
     # except:
     #     return HttpResponse('No tienes permiso para acceder prueba a volver al <a href="/">inicio</a>', status=401)
-
 
 def email_comunicante(request): #Función que redacta la estructura que tendrá el email y realiza el envio.
     try:

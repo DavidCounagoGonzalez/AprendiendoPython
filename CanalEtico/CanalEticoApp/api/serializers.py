@@ -28,7 +28,6 @@ class ComunicadoUpdateSerializer(ModelSerializer):
         fields = '__all__'
         
     def save(self, **kwargs):
-        print('Hola')
         # Extrae el archivo de los datos validados
         pruebas = self.validated_data.pop('pruebas', None)  # O 'imagen' según sea necesario
 
