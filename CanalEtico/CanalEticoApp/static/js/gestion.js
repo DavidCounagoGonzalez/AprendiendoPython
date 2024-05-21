@@ -7,6 +7,9 @@ const listarComunicados = async (busqueda, estado, tipo, page) => {
 
         if (data.count >= 1) { //Comprobamos que se haya producido la transacción
             let lista = "";
+
+            document.getElementById('total-pages').innerHTML = Math.ceil(data.count/25)
+
             data.results.forEach((comunicado) => { //Recorremos los datos recibidos aplicando los filtros solicitados
                 if (comunicado.token.includes(busqueda)) { //Aquellos que el token contenga con lo indicado en el input
                     
@@ -40,7 +43,7 @@ const listarComunicados = async (busqueda, estado, tipo, page) => {
                     }
                 }
             });
-            cuerpoTabla.innerHTML = lista; //Añadimos la lista de filas guardadas posteriormente al cuerpod e la tabla en el html
+            cuerpoTabla.innerHTML = lista; //Añadimos la lista de filas guardadas posteriormente al cuerpo de la tabla en el html
         } else {
             alert("Comunicados no encontrados...")
         }

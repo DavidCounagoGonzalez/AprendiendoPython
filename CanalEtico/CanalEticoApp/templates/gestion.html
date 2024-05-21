@@ -17,7 +17,8 @@
                         <div class="col-12 col-lg-6">
                             <div id="custom-search-input">
                                 <div class="input-group col-md-12">
-                                    <input type="text" class="form-control" placeholder="Buscar..." name="buscar" id="buscar" value="{{ request.GET.buscar }}">
+                                    <input type="text" class="form-control" placeholder="Buscar..." name="buscar"
+                                        id="buscar" value="{{ request.GET.buscar }}">
                                 </div>
                             </div>
                         </div>
@@ -26,7 +27,8 @@
                         </div>
                         <div class="mb-3">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" name="solucionado" id="solucionado" checked>
+                                <input class="form-check-input" type="checkbox" value="" name="solucionado"
+                                    id="solucionado" checked>
                                 <label class="form-check-label" for="solucionado">
                                     Solucionado
                                 </label>
@@ -52,12 +54,14 @@
             </table>
         </div>
     </div>
-    <div id="paginator">
-        <button id="first-page">Primera</button>
-        <button id="prev-page">Anterior</button>
-        <span id="page-info">Página <span id="current-page">1</span> de <span id="total-pages">1000</span></span>
-        <button id="next-page">Siguiente</button>
-        <button id="last-page">Última</button>
+    <div class="d-flex justify-content-center">
+        <div class="mb-3" id="paginator">
+            <button class="btn btn-primary" id="first-page">Primera</button>
+            <button class="btn btn-primary" id="prev-page">Anterior</button>
+            <span style="color: black;" id="page-info">Página <span id="current-page">1</span> de <span id="total-pages"></span></span>
+            <button class="btn btn-primary" id="next-page">Siguiente</button>
+            <button class="btn btn-primary" id="last-page">Última</button>
+        </div>
     </div>
 </div>
 </div>

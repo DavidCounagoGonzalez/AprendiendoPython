@@ -47,7 +47,7 @@ def get_Comunicados(request):
     
     if response.status_code == 200:
         data = response.json()
-    
+
     # comunicados = Comunicado.objects.values() #Recogemos todos los comunicados
     # comunicados = list(comunicados.order_by( 'solucionado', 'fecha')) # Los ordenamos de manera ascendente primero los no solucionados y por fecha
     
