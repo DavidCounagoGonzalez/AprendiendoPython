@@ -15,7 +15,9 @@ class ComunicadoApiViewSet(ModelViewSet):
     serializer_class = ComunicadoSerializer
     queryset = Comunicado.objects.all().order_by( 'solucionado', 'fecha')
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['token']
+    filterset_fields = {
+                        'token': ['icontains']
+                        }
     lookup_field = 'token'
     pagination_class = CustomPagination
     

@@ -13,9 +13,10 @@
 </header>
 <div class="container-fluid">
     <div class="row">
-        <aside class="col-md-3 col-lg-2 sidebar p-3">
+        <button id="toggleAside" class="btn btn-dark d-md-none">☰</button>
+        <aside id="sidebarJS" class="col-md-3 col-lg-2 sidebar p-3">
             <nav class="nav flex-column">
-                <a href="" class="nav-link">Comunicados</a>
+                <a href="/gestion/comunicados" class="nav-link">Comunicados</a>
             </nav>
         </aside>
         <main class="col-md-9 col-lg-10 p-4">
@@ -88,6 +89,7 @@
 {% endblock content %}
 {% block extrajs %}
 <script src="{% static 'js/gestion.js' %}"></script>
+<script src="{% static 'js/aside.js' %}"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>

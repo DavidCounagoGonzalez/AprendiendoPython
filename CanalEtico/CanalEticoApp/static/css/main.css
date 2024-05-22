@@ -5,6 +5,14 @@ body {
     color: white;
 }
 
+.container-fluid {
+    flex: 1;
+}
+
+.row {
+    display: flex;
+}
+
 .bloque {
     padding: 6%;
 }
@@ -87,6 +95,7 @@ body {
 .sidebar {
     min-height: 100vh;
     background-color: #343a40;
+    transition: transform 0.3s ease;
 }
 
 .sidebar .nav-link {
@@ -98,6 +107,11 @@ body {
     color: #b68742;
 }
 
+#toggleAside {
+    display: none;
+    margin: 10px;
+}
+
 .footer {
     background-color: rgb(33, 37, 41);
     color: white;
@@ -105,10 +119,34 @@ body {
     padding: 10px 0;
 }
 
-@media only screen and (max-width: 768px) {
-
+@media (max-width: 768px) {
     html,
     body {
         height: auto;
     }
+
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 250px;
+        transform: translateX(-100%);
+        background-color: #343a40;
+        z-index: 1000;
+    }
+
+    main {
+        margin-left: 0;
+    }
+
+    /* Mostrar el botón de menú */
+    #toggleAside {
+        display: block;
+    }
+}
+
+/* Mostrar el aside cuando está activo */
+aside.activo {
+    transform: translateX(0);
 }

@@ -1,68 +1,98 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 
 {% load crispy_forms_tags %}
-<div class="row">
-    <div class="col-12">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Comunicado</h6>    
-                <a class="nav-link" href="{% url 'logout' %}">Logout</a>                             
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="mb-3 col-sm-8" style="border: 1px solid black;">
-                        <h3>Tipo</h3>
-                        <h6>{{ comunicado.tipo }}</h6>
-                    </div>
-                    <div class="mb-3 col-sm-4" style="border: 1px solid black;">
-                        <h3>Fecha</h3>
-                        <h6>{{ comunicado.fecha }}</h6>
-                    </div>
-                    <div class="mb-3 col-sm-6" style="border: 1px solid black;">
-                        <h5>Descripción</h5>
-                        <p>{{ comunicado.descripcion }}</p>
-                    </div>
-                    <div class="mb-3 col-sm-3" style="border: 1px solid black;">
-                        <h5>Implicados</h5>
-                        <p>{{ comunicado.implicados }}</p>
-                    </div>
-                    <div class="mb-3 col-sm-3" style="border: 1px solid black;">
-                        <h5>Testigos</h5>
-                        <p>{{ comunicado.testigos }}</p>
-                    </div>
-                    <div class="mb-3 col-sm-3" style="border: 1px solid black;">
-                        <h5>Lugar</h5>
-                        <p>{{ comunicado.lugar }}</p>
-                    </div>
-                    <div class="mb-3 col-sm-3" style="border: 1px solid black;">
-                        <h5>Superior Avisado</h5>
-                        <p>{{ comunicado.avisado }}</p>
-                    </div>
-                    <div class="mb-3 col-sm-3" style="border: 1px solid black;">
-                        <h5>Pruebas</h5>
-                        <a href="{{ comunicado.pruebas }}">Ver Pruebas</a>
-                    </div>
-                    <div class="mb-3 col-sm-3" style="border: 1px solid black;">
-                        <h5>Persona</h5>
-                        <p>{{ comunicado.comunicante }}</p>
-                    </div>
-                    <div class="mb-3 col-sm-12">
-                        <h5>Solución</h5>
-                        {% if comunicado.solucionado %}
-                        <p> {{ comunicado.solucion }} </p>
-                        {% else %}
-                        <form action="" method="post">
-                            {% csrf_token %}
-                            {{ form | crispy }}
-                            <button class="btn btn-primary w-40" type="submit">Enviar</button>
-                        </form>
-                        {% endif %}
+<header class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a href="#" class="navbar-brand">Admin Dashboard</a>
+        <ul class="nav">
+            <li class="nav-item"><a href="/" class="nav-link text-light">Inicio</a></li>
+            <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link text-light">Cerrar Sesión</a></li>
+        </ul>
+    </div>
+</header>
+<div class="container-fluid">
+    <div class="row">
+        <button id="toggleAside" class="btn btn-dark d-md-none">☰</button>
+        <aside id="sidebarJS" class="col-md-3 col-lg-2 sidebar p-3">
+            <nav class="nav flex-column">
+                <a href="/gestion/comunicados" class="nav-link">Comunicados</a>
+            </nav>
+        </aside>
+        <main class="col-md-9 col-lg-10 p-4">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Comunicado</h6>
+                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="mb-3 col-sm-8" style="border: 1px solid black;">
+                                    <h3>Tipo</h3>
+                                    <h6>{{ comunicado.tipo }}</h6>
+                                </div>
+                                <div class="mb-3 col-sm-4" style="border: 1px solid black;">
+                                    <h3>Fecha</h3>
+                                    <h6>{{ comunicado.fecha }}</h6>
+                                </div>
+                                <div class="mb-3 col-sm-6" style="border: 1px solid black;">
+                                    <h5>Descripción</h5>
+                                    <p>{{ comunicado.descripcion }}</p>
+                                </div>
+                                <div class="mb-3 col-sm-3" style="border: 1px solid black;">
+                                    <h5>Implicados</h5>
+                                    <p>{{ comunicado.implicados }}</p>
+                                </div>
+                                <div class="mb-3 col-sm-3" style="border: 1px solid black;">
+                                    <h5>Testigos</h5>
+                                    <p>{{ comunicado.testigos }}</p>
+                                </div>
+                                <div class="mb-3 col-sm-3" style="border: 1px solid black;">
+                                    <h5>Lugar</h5>
+                                    <p>{{ comunicado.lugar }}</p>
+                                </div>
+                                <div class="mb-3 col-sm-3" style="border: 1px solid black;">
+                                    <h5>Superior Avisado</h5>
+                                    <p>{{ comunicado.avisado }}</p>
+                                </div>
+                                <div class="mb-3 col-sm-3" style="border: 1px solid black;">
+                                    <h5>Pruebas</h5>
+                                    <a href="{{ comunicado.pruebas }}">Ver Pruebas</a>
+                                </div>
+                                <div class="mb-3 col-sm-3" style="border: 1px solid black;">
+                                    <h5>Persona</h5>
+                                    <p>{{ comunicado.comunicante }}</p>
+                                </div>
+                                <div class="mb-3 col-sm-12">
+                                    <h5>Solución</h5>
+                                    {% if comunicado.solucionado %}
+                                    <p> {{ comunicado.solucion }} </p>
+                                    {% else %}
+                                    <form action="" method="post">
+                                        {% csrf_token %}
+                                        {{ form | crispy }}
+                                        <button class="btn btn-primary w-40" type="submit">Enviar</button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
 </div>
+<footer class="footer mt-auto">
+    <div class="container">
+        <p>&copy; 2024 Tu Empresa. Todos los derechos reservados.</p>
+    </div>
+</footer>
+<script src="{% static 'js/aside.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
 {% endblock %}

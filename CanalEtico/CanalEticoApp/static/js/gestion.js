@@ -1,6 +1,6 @@
 const listarComunicados = async (busqueda, estado, tipo, page) => {
     try {
-        const response = await fetch('/api/comunicado/?page=' + page.toString()); //Recibe los datos en forma de json registrados en esa url
+        const response = await fetch('/api/comunicado/?page=' + page.toString() + '&token__icontains=' + busqueda); //Recibe los datos en forma de json registrados en esa url
         const data = await response.json(); //Transforma el json en un objeto de js
 
         document.getElementById('current-page').innerText = page;
@@ -8,10 +8,7 @@ const listarComunicados = async (busqueda, estado, tipo, page) => {
         if (data.count >= 1) { //Comprobamos que se haya producido la transacción
             let lista = "";
 
-            document.getElementById('total-pages').innerHTML = Math.ceil(data.count/25)
-
             data.results.forEach((comunicado) => { //Recorremos los datos recibidos aplicando los filtros solicitados
-                if (comunicado.token.includes(busqueda)) { //Aquellos que el token contenga con lo indicado en el input
                     
                     if(comunicado.tipo.tipo.includes(tipo)){ //Aquellos que sean del mismo tipo indicado en el select
                         if (estado) { //EN este if recogerá también los solucionados y en caso de estar solucionados también se mostrarán con fondo verde
@@ -41,9 +38,11 @@ const listarComunicados = async (busqueda, estado, tipo, page) => {
                             
                         }
                     }
-                }
+                
             });
             cuerpoTabla.innerHTML = lista; //Añadimos la lista de filas guardadas posteriormente al cuerpo de la tabla en el html
+
+            document.getElementById('total-pages').innerHTML = Math.ceil(data.count/25);
         } else {
             alert("Comunicados no encontrados...")
         }
