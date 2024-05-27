@@ -150,7 +150,7 @@ def email_comunicante(request): #Función que redacta la estructura que tendrá 
         pass
 
 def data_comunicado(request):
-    try:
+    # try:
         if request.session['forma'] != '2' and request.session['forma'] != '3': #Se puede acceder que con 2 en caso de seleccionar anoónimo o 3 si vienes de hacer el personal
             return redirect('forma')
         else:
@@ -207,8 +207,8 @@ def data_comunicado(request):
                 else:
 
                     return render(request, 'DataCom.html', {'form': ComunicadoForm, 'error': 'revise los datos'})
-    except:
-        return HttpResponse('No tienes permiso para acceder, prueba a volver al <a href="/">inicio</a>', status=401)
+    # except:
+    #     return HttpResponse('No tienes permiso para acceder, prueba a volver al <a href="/">inicio</a>', status=401)
 
 def finalizar(request):#Tratamos de borrar los datos de sesión y finalmente mostramos una página con el código del comunicado.
     try:

@@ -32,7 +32,7 @@ SECRET_KEY = 'django-insecure-kipdw=)qyc(7h(58#5n=8ys(%#v_2%e2o4p*n8506pbc^2ut*t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -49,7 +49,9 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'rest_framework',
     'coreapi',
-    'django_filters'
+    'django_filters',
+    'captcha',
+    'django_recaptcha'
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -166,3 +168,10 @@ REST_FRAMEWORK = {
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 100000  # Ajusta este valor según sea necesario
 DATA_UPLOAD_MAX_MEMORY_SIZE = 2621440  # 2.5MB, ajusta según sea necesario
+
+RECAPTCHA_PUBLIC_KEY = env('RECAPTCHA_PUBLIC')
+RECAPTCHA_PRIVATE_KEY = env('RECAPTCHA_PRIVATE')
+RECAPTCHA_USE_SSL = True  # Asegúrate de que esté habilitado SSL
+
+SESSION_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SECURE = True

@@ -11,7 +11,7 @@
                         <p>Introduce el código de tu comuinicado, el cual recibiste en tu correo o al final de realizar
                             tu petición, junto a la contraseña que indicaste en el formulario.</p>
                         <p>{{ error }}</p>
-                        <form class="form w-100" method="post" enctype="multipart/form-data">
+                        <form class="form w-100" method="post" enctype="multipart/form-data" id="ComForm">
                             {% csrf_token %}
 
                             {{ form | crispy }}
